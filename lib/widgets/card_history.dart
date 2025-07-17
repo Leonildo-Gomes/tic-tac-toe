@@ -31,33 +31,40 @@ class CardHistory extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Padding(
-        padding: _kCardPadding,
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: _kCardPadding,
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
                   ),
-                  const SizedBox(height: _kVerticalSpacing),
-                  Text('Data: $date', style: textTheme.bodySmall),
-                  const SizedBox(height: _kVerticalSpacing * 2),
-                  _buildModeIndicator(textTheme, colorScheme),
-                ],
-              ),
+                ),
+                const SizedBox(height: _kVerticalSpacing),
+                Text(
+                  'Data: $date',
+                  style: textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: _kVerticalSpacing * 2),
+                _buildModeIndicator(textTheme, colorScheme),
+              ],
             ),
-            const SizedBox(width: _kHorizontalSpacing),
-            _buildMiniBoard(context, colorScheme, textTheme),
-          ],
-        ),
+          ),
+          const SizedBox(width: _kHorizontalSpacing),
+          _buildMiniBoard(context, colorScheme, textTheme),
+        ],
       ),
     );
   }
@@ -98,18 +105,18 @@ class CardHistory extends StatelessWidget {
           final mark = board[index];
           final Color markColor;
 
-          if (mark == Player.PLAYER_X) {
+          if (mark == Player.playerX) {
             markColor = colorScheme.primary;
-          } else if (mark == Player.PLAYER_O) {
-            markColor = colorScheme.error;
+          } else if (mark == Player.playerO) {
+            markColor = colorScheme.tertiary;
           } else {
-            markColor = colorScheme.onSurfaceVariant;
+            markColor = Colors.transparent;
           }
 
           return Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: colorScheme.surfaceContainerHighest.withOpacity(0.6),
+              color: colorScheme.surfaceContainer,
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(

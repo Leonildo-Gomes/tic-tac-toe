@@ -29,27 +29,58 @@ class _HistoricScreenState extends State<HistoricScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      appBar: AppBar(title: Text('Histórico'), centerTitle: true),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: gameHistory.length,
-              itemBuilder: (context, index) {
-                final history = gameHistory[index];
-                final date = DateTime.parse(history.date);
-                return CardHistory(
-                  name:
-                      'Jogador ${history.winner}', // Corrected string interpolation
-                  date: DateFormat('dd/MM/yyyy HH:mm').format(date),
-                  mode: history.mode,
-                  board: history.board,
-                );
-              },
-            ),
-          ),
-        ],
+      appBar: AppBar(
+        title: const Text('Histórico de Partidas'),
+        backgroundColor: theme.colorScheme.surface,
+        scrolledUnderElevation: 0,
+      ),
+      body: SafeArea(
+        child: gameHistory.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.history_toggle_off_rounded, size: 80),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Nenhuma partida encontrada',
+                      style: theme.textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Jogue uma partida para ver o histórico.',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                itemCount: gameHistory.length,
+                itemBuilder: (context, index) {
+                  final history = gameHistory[index];
+                  final date = DateTime.parse(history.date);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 6.0,
+                    ),
+                    child: CardHistory(
+                      name: history.winner == 'empate'
+                          ? 'Empate'
+                          : 'Vencedor: ${history.winner}',
+                      date: DateFormat('dd/MM/yyyy HH:mm').format(date),
+                      mode: history.mode,
+                      board: history.board,
+                    ),
+                  );
+                },
+              ),
       ),
     );
   }

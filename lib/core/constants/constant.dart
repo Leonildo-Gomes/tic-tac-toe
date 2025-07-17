@@ -1,3 +1,3 @@
 class Constant {
-  static const int BOARD_SIZE = 9;
+  static const int boardSize = 9;
 }

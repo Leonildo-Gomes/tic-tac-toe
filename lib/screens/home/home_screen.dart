@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/screens/historic/historic_screen.dart';
 import 'package:tic_tac_toe/screens/menu/menu_screen.dart';
-import 'package:tic_tac_toe/widgets/custom_button.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = 'HomeScreen';
@@ -9,58 +8,77 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            width: screenWidth * 0.8,
-            constraints: const BoxConstraints(maxWidth: 400),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(24),
                 ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-
-              children: [
-                Image.asset(
-                  'assets/images/tic-tac-toe.png',
-                  height: screenHeight * 0.2,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 32,
                 ),
-                const SizedBox(height: 20),
-                Text(
-                  'Jogo da Velha',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Image.asset(
+                      'assets/images/tic-tac-toe.png',
+                      height: screenHeight * 0.12,
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Jogo da Velha',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.displaySmall?.copyWith(
+                        color: theme.colorScheme.onSurface,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Desafie os seus amigos!',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 48),
+                    FilledButton.icon(
+                      icon: const Icon(Icons.play_arrow_rounded),
+                      label: const Text('Iniciar Jogo'),
+                      onPressed: () {
+                        Navigator.pushNamed(context, MenuScreen.routeName);
+                      },
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        textStyle: theme.textTheme.titleMedium,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.history_rounded),
+                      label: const Text('Histórico'),
+                      onPressed: () {
+                        Navigator.pushNamed(context, HistoricScreen.routeName);
+                      },
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        textStyle: theme.textTheme.titleMedium,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                CustomButton(
-                  text: 'Iniciar Jogo',
-                  icon: Icons.play_arrow,
-                  onPressed: () {
-                    Navigator.pushNamed(context, MenuScreen.routeName);
-                  },
-                ),
-                const SizedBox(height: 10),
-                CustomButton(
-                  text: 'Histórico',
-                  icon: Icons.history,
-                  onPressed: () {
-                    Navigator.pushNamed(context, HistoricScreen.routeName);
-                  },
-                ),
-                const SizedBox(height: 10),
-              ],
+              ),
             ),
           ),
         ),

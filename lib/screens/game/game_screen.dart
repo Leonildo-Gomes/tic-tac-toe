@@ -3,9 +3,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/core/constants/constant.dart';
+import 'package:tic_tac_toe/core/constants/player.dart';
 import 'package:tic_tac_toe/core/controllers/game_controller.dart';
 import 'package:tic_tac_toe/services/database_service.dart';
-import 'package:tic_tac_toe/widgets/custom_button.dart';
+import 'package:tic_tac_toe/widgets/score_indicator.dart';
+
+import 'package:tic_tac_toe/widgets/end_game_dialog.dart';
 
 class GameScreen extends StatefulWidget {
   static const String routeName = 'GameScreen';
@@ -26,6 +29,8 @@ class _GameScreenState extends State<GameScreen> {
   late GameController _gameController;
   final DatabaseService databaseService = DatabaseService.instance;
   final Random _random = Random();
+  int _userWins = 0;
+  int _botWins = 0;
 
   @override
   void initState() {
@@ -39,7 +44,6 @@ class _GameScreenState extends State<GameScreen> {
 
     if (!userPlaysFirst) {
       _gameController.isUserTurn = false;
-      // A CPU joga primeiro com um pequeno atraso para o jogador perceber.
       Timer(
         const Duration(milliseconds: 500),
         () => setState(() => _gameController.computerMove(widget.userMark)),
@@ -64,9 +68,19 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       _gameController.makeMove(index, widget.userMark);
       if (_gameController.gameOver) {
+        _updateScores();
         _showEndGameDialog();
       }
     });
+  }
+
+  void _updateScores() {
+    if (_gameController.winner == widget.userMark) {
+      _userWins++;
+    } else if (_gameController.winner != null &&
+        _gameController.winner != 'empate') {
+      _botWins++;
+    }
   }
 
   void _showEndGameDialog() {
@@ -74,22 +88,9 @@ class _GameScreenState extends State<GameScreen> {
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        final title = _gameController.winner != null
-            ? 'O VENCEDOR É: ${_gameController.winner}'
-            : 'EMPATE';
-        return AlertDialog(
-          title: Text(title, textAlign: TextAlign.center),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: <Widget>[
-            CustomButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _resetGame();
-              },
-              text: 'Jogar Novamente',
-              icon: Icons.replay,
-            ),
-          ],
+        return EndGameDialog(
+          winner: _gameController.winner,
+          onPlayAgain: _resetGame,
         );
       },
     );
@@ -97,77 +98,95 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Jogo da Velha'), centerTitle: true),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildTurnIndicator(),
-            const SizedBox(height: 20),
-            _buildGameBoard(),
-            const SizedBox(height: 40),
-            CustomButton(
-              onPressed: _resetGame,
-              text: 'Reiniciar Jogo',
-              icon: Icons.refresh,
-            ),
-          ],
+      appBar: AppBar(
+        title: const Text('Jogo da Velha'),
+        backgroundColor: theme.colorScheme.surface,
+        scrolledUnderElevation: 0,
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ScoreIndicator(
+                userMark: widget.userMark,
+                userWins: _userWins,
+                botWins: _botWins,
+                botMark: _gameController.getBotMark(widget.userMark),
+                isUserTurn: _gameController.isUserTurn,
+              ),
+              Expanded(child: Center(child: _buildGameBoard())),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: OutlinedButton.icon(
+                  onPressed: _resetGame,
+                  icon: const Icon(Icons.refresh_rounded),
+                  label: const Text('Reiniciar Jogo'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTurnIndicator() {
-    final isUserTurn = _gameController.isUserTurn;
-    final turnText = isUserTurn ? 'Sua vez' : 'Vez da CPU';
-    final playerMark = isUserTurn
-        ? widget.userMark
-        : (_gameController.getBotMark(widget.userMark));
-
-    return Text(
-      '$turnText ($playerMark)',
-      style: Theme.of(context).textTheme.headlineSmall,
-    );
-  }
-
   Widget _buildGameBoard() {
     final screenWidth = MediaQuery.of(context).size.width;
-    final boardSize = screenWidth > 600 ? 400.0 : screenWidth * 0.9;
+    final boardSize = screenWidth > 600 ? 400.0 : screenWidth * 0.85;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
-    return SizedBox(
-      width: boardSize,
-      height: boardSize,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: boardSize, maxHeight: boardSize),
       child: GridView.builder(
-        itemCount: Constant.BOARD_SIZE,
+        itemCount: Constant.boardSize,
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
         ),
         itemBuilder: (context, index) {
+          final mark = _gameController.board[index];
           final isMatched = _gameController.matchedIndexes.contains(index);
-          final colorScheme = Theme.of(context).colorScheme;
 
-          return GestureDetector(
-            onTap: () => _handleTap(index),
-            child: Container(
-              decoration: BoxDecoration(
-                color: isMatched
-                    ? colorScheme.primaryContainer
-                    : colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(10),
-              ),
+          final Color markColor;
+          if (mark == Player.playerX) {
+            markColor = colorScheme.primary;
+          } else if (mark == Player.playerO) {
+            markColor = colorScheme.tertiary;
+          } else {
+            markColor = Colors.transparent; // No color for empty cells
+          }
+
+          final cellColor = isMatched
+              ? colorScheme.primary
+              : colorScheme.surfaceContainerHigh;
+          final textColor = isMatched ? colorScheme.onPrimary : markColor;
+
+          return Material(
+            color: cellColor,
+            borderRadius: BorderRadius.circular(16),
+            child: InkWell(
+              onTap: () => _handleTap(index),
+              borderRadius: BorderRadius.circular(16),
               child: Center(
                 child: Text(
-                  _gameController.board[index],
-                  style: TextStyle(
-                    fontSize: 48,
+                  mark,
+                  style: textTheme.displayLarge?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: isMatched
-                        ? colorScheme.onPrimaryContainer
-                        : colorScheme.onSurface,
+                    color: textColor,
                   ),
                 ),
               ),

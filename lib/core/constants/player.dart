@@ -1,4 +1,4 @@
 class Player {
-  static const String PLAYER_X = 'X';
-  static const String PLAYER_O = 'O';
+  static const String playerX = 'X';
+  static const String playerO = 'O';
 }

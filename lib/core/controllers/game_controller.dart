@@ -5,7 +5,7 @@ import 'package:tic_tac_toe/models/history.dart';
 import 'package:tic_tac_toe/services/database_service.dart';
 
 class GameController {
-  List<String> board = List.filled(Constant.BOARD_SIZE, '');
+  List<String> board = List.filled(Constant.boardSize, '');
   List<int> matchedIndexes = [];
   bool gameOver = false;
   bool isUserTurn = true;
@@ -18,7 +18,7 @@ class GameController {
   bool get isDraw => !board.contains('') && winner == null;
 
   void resetGame() {
-    board = List.filled(Constant.BOARD_SIZE, '');
+    board = List.filled(Constant.boardSize, '');
     gameOver = false;
     matchedIndexes = [];
     winner = null;
