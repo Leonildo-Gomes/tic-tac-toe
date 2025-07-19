@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tic_tac_toe/core/constants/difficulty.dart';
 import 'package:tic_tac_toe/screens/game/game_screen.dart';
 
 class MarkButton extends StatelessWidget {
   final String userMark;
   final Icon icon;
-  final String selectedDifficulty;
+  final Difficulty selectedDifficulty;
   const MarkButton({
     super.key,
     required this.userMark,

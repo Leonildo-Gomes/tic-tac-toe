@@ -3,17 +3,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/core/constants/constant.dart';
+import 'package:tic_tac_toe/core/constants/difficulty.dart';
 import 'package:tic_tac_toe/core/constants/player.dart';
 import 'package:tic_tac_toe/core/controllers/game_controller.dart';
 import 'package:tic_tac_toe/services/database_service.dart';
-import 'package:tic_tac_toe/widgets/score_indicator.dart';
-
 import 'package:tic_tac_toe/widgets/end_game_dialog.dart';
+import 'package:tic_tac_toe/widgets/score_indicator.dart';
 
 class GameScreen extends StatefulWidget {
   static const String routeName = 'GameScreen';
   final String userMark;
-  final String selectedDifficulty;
+  final Difficulty selectedDifficulty;
 
   const GameScreen({
     super.key,
@@ -39,14 +39,18 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _initializeGame() {
-    _gameController = GameController(databaseService);
+    _gameController = GameController(
+      databaseService,
+      widget.selectedDifficulty,
+      widget.userMark,
+    );
     final bool userPlaysFirst = _random.nextBool();
 
     if (!userPlaysFirst) {
       _gameController.isUserTurn = false;
       Timer(
         const Duration(milliseconds: 500),
-        () => setState(() => _gameController.computerMove(widget.userMark)),
+        () => setState(() => _gameController.computerMove()),
       );
     }
   }
@@ -66,7 +70,7 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     setState(() {
-      _gameController.makeMove(index, widget.userMark);
+      _gameController.makeMove(index);
       if (_gameController.gameOver) {
         _updateScores();
         _showEndGameDialog();
@@ -116,7 +120,7 @@ class _GameScreenState extends State<GameScreen> {
                 userMark: widget.userMark,
                 userWins: _userWins,
                 botWins: _botWins,
-                botMark: _gameController.getBotMark(widget.userMark),
+                botMark: _gameController.botMark,
                 isUserTurn: _gameController.isUserTurn,
               ),
               Expanded(child: Center(child: _buildGameBoard())),

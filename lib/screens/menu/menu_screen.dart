@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tic_tac_toe/core/constants/difficulty.dart';
 import 'package:tic_tac_toe/core/constants/player.dart';
 import 'package:tic_tac_toe/screens/game/game_screen.dart';
+import 'package:tic_tac_toe/widgets/selection_group.dart';
 
 class MenuScreen extends StatefulWidget {
   static const String routeName = 'MenuScreen';
@@ -11,8 +13,8 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  String _selectedDifficulty = 'Basico';
-  final List<String> _difficulties = ['Basico', 'Avancado'];
+  // Use the enum directly for type safety
+  Difficulty _selectedDifficulty = Difficulty.easy;
   String _selectedMark = Player.playerX;
 
   void _startGame() {
@@ -20,6 +22,7 @@ class _MenuScreenState extends State<MenuScreen> {
       MaterialPageRoute(
         builder: (context) => GameScreen(
           userMark: _selectedMark,
+          // Pass the enum, not a string
           selectedDifficulty: _selectedDifficulty,
         ),
       ),
@@ -44,10 +47,6 @@ class _MenuScreenState extends State<MenuScreen> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 400),
               child: Container(
-                /*decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHigh,
-                  borderRadius: BorderRadius.circular(24),
-                ),*/
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
                   vertical: 32,
@@ -56,50 +55,36 @@ class _MenuScreenState extends State<MenuScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      'Nível de Jogo',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    SegmentedButton<String>(
-                      segments: _difficulties.map((level) {
-                        return ButtonSegment<String>(
+                    SelectionGroup<Difficulty>(
+                      title: 'Nível de Jogo',
+                      segments: Difficulty.values.map((level) {
+                        return ButtonSegment<Difficulty>(
                           value: level,
-                          label: Text(level),
+                          label: Text(level.label),
                         );
                       }).toList(),
-                      selected: <String>{_selectedDifficulty},
-                      onSelectionChanged: (Set<String> newSelection) {
+                      selected: {_selectedDifficulty},
+                      onSelectionChanged: (newSelection) {
                         setState(() {
                           _selectedDifficulty = newSelection.first;
                         });
                       },
                     ),
                     const SizedBox(height: 32),
-                    Text(
-                      'Escolha seu lado',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    SegmentedButton<String>(
-                      segments: <ButtonSegment<String>>[
+                    SelectionGroup<String>(
+                      title: 'Escolha seu lado',
+                      segments: const <ButtonSegment<String>>[
                         ButtonSegment<String>(
                           value: Player.playerX,
-                          icon: const Text('X', style: TextStyle(fontSize: 20)),
+                          icon: Text('X', style: TextStyle(fontSize: 20)),
                         ),
                         ButtonSegment<String>(
                           value: Player.playerO,
-                          icon: const Text('O', style: TextStyle(fontSize: 20)),
+                          icon: Text('O', style: TextStyle(fontSize: 20)),
                         ),
                       ],
-                      selected: <String>{_selectedMark},
-                      onSelectionChanged: (Set<String> newSelection) {
+                      selected: {_selectedMark},
+                      onSelectionChanged: (newSelection) {
                         setState(() {
                           _selectedMark = newSelection.first;
                         });

@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 3)); // 3-second delay
+    await Future.delayed(const Duration(seconds: 5)); // 3-second delay
     if (mounted) {
       Navigator.pushReplacementNamed(context, HomeScreen.routeName);
     }
@@ -36,8 +36,8 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/app_logo.png',
-              height: screenHeight * 0.2,
+              'assets/images/splash_logo.png',
+              //height: screenHeight * 0.2,
             ),
             const SizedBox(height: 24),
             Text(
