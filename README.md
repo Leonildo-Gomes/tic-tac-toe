@@ -1,45 +1,48 @@
 # Jogo da Velha (Tic Tac Toe)
 
-Um simples jogo da velha desenvolvido em Flutter com um design moderno e intuitivo.
+Um jogo da velha moderno e completo, desenvolvido em Flutter, com múltiplos níveis de dificuldade e um sistema de histórico de partidas.
 
-A simple tic-tac-toe game developed in Flutter with a modern and intuitive design.
+A modern and complete tic-tac-toe game developed in Flutter, featuring multiple difficulty levels and a match history system.
 
 ## Descrição / Description
 
-Este é um jogo simples de Jogo da Velha desenvolvido em Flutter, onde 1 jogador pode enfrentar a CPU. O jogo fornece uma interface amigável e fácil de usar, com um design moderno baseado no Material Design 3, e indicação clara de vitória ou empate.
+Este projeto é uma implementação completa do clássico Jogo da Velha, onde o jogador pode desafiar a CPU. A aplicação destaca-se por um design limpo e intuitivo (Material Design 3), animações fluidas e funcionalidades robustas, como a persistência do histórico de vitórias numa base de dados local.
 
-This is a simple Tic Tac Toe game developed in Flutter, where 1 player can face the CPU. The game provides a friendly and easy-to-use interface, with a modern design based on Material Design 3, and a clear indication of victory or draw.
+This project is a complete implementation of the classic Tic Tac Toe game, where the player can challenge the CPU. The application stands out for its clean and intuitive design (Material Design 3), smooth animations, and robust features, such as persisting the history of victories in a local database.
+
+## Funcionalidades / Features
+
+-   **Modo de Jogo Individual:** Desafie a CPU em três níveis de dificuldade: Fácil, Médio e Difícil. / **Single Player Mode:** Challenge the CPU with three difficulty levels: Easy, Medium, and Hard.
+-   **Histórico de Partidas:** Todas as vitórias são guardadas localmente para que possa rever o seu desempenho. / **Match History:** All victories are saved locally so you can review your performance.
+-   **Gestão de Histórico:** Elimine partidas individuais com um simples deslizar ou apague todo o histórico de uma só vez. / **History Management:** Delete individual matches with a simple swipe or clear the entire history at once.
+-   **Design Moderno:** Interface limpa e intuitiva, construída com Material Design 3 e animações fluidas. / **Modern Design:** Clean and intuitive interface, built with Material Design 3 and smooth animations.
+
+## Screenshots
+
+| Tela Inicial | Menu de Jogo | Tela de Jogo |
+| :---: | :---: | :---: |
+| ![Tela Inicial](screenshot/home_screen.jpeg) | ![Menu de Jogo](screenshot/menu_screen.jpeg) | ![Tela de Jogo](screenshot/game_screen.jpeg) |
+
+| Tela de Vitória | Histórico de Partidas |
+| :---: | :---: |
+| ![Tela de Vitória](screenshot/winner_screen.jpeg) | ![Histórico de Partidas](screenshot/historic_screen.jpeg) |
 
 ## Tecnologias Utilizadas / Technologies Used
 
-<img 
-    align="center" 
-    alt="Flutter"
-    title="Flutter" 
-    src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" 
-/>
-<img 
-    align="center" 
-    alt="Dart"
-    title="Dart" 
-    src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" 
-/>
-<img 
-    align="center" 
-    alt="SQLite"
-    title="SQLite" 
-    src="https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white" 
-/>
+<img align="center" alt="Flutter" title="Flutter" src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" />
+<img align="center" alt="Dart" title="Dart" src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" />
+<img align="center" alt="SQLite" title="SQLite" src="https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white" />
 
-- **Flutter:** Framework para desenvolvimento de aplicações multiplataforma. / Framework for cross-platform application development.
-- **Dart:** Linguagem de programação utilizada pelo Flutter. / Programming language used by Flutter.
-- **sqflite:** Plugin para acesso a bancos de dados SQLite. / Plugin for accessing SQLite databases.
+-   **Flutter:** Framework para desenvolvimento de aplicações multiplataforma. / Framework for cross-platform application development.
+-   **Dart:** Linguagem de programação utilizada pelo Flutter. / Programming language used by Flutter.
+-   **sqflite:** Plugin para acesso a bancos de dados SQLite, usado para guardar o histórico. / Plugin for accessing SQLite databases, used to save the history.
+-   **flutter_animate:** Para a criação de animações complexas de forma simples. / For creating complex animations in a simple way.
 
 ## Estrutura do Projeto / Project Structure
 
-A estrutura do projeto segue as convenções da comunidade Flutter, separando as responsabilidades em diferentes diretórios:
+A estrutura do projeto segue as melhores práticas, separando as responsabilidades em diferentes diretórios para garantir um código limpo e manutenível:
 
-The project structure follows Flutter community conventions, separating responsibilities into different directories:
+The project structure follows best practices, separating responsibilities into different directories to ensure clean and maintainable code:
 
 ```
 lib/
@@ -59,18 +62,14 @@ lib/
 │   └── database_service.dart
 └── widgets/
     ├── card_history.dart
+    ├── empty_history_view.dart
     ├── end_game_dialog.dart
+    ├── history_list_view.dart
     ├── mark_button.dart
     ├── player_choice.dart
     ├── player_score_card.dart
     └── score_indicator.dart
 ```
-
-- **`lib/core`**: Contém a lógica de negócios central, como controladores, constantes e definições de tema. / Contains the central business logic, such as controllers, constants, and theme definitions.
-- **`lib/models`**: Contém os modelos de dados da aplicação. / Contains the application's data models.
-- **`lib/screens`**: Contém as telas da aplicação. / Contains the application screens.
-- **`lib/services`**: Contém os serviços da aplicação, como o serviço de banco de dados. / Contains the application's services, such as the database service.
-- **`lib/widgets`**: Contém os widgets reutilizáveis da aplicação. / Contains the application's reusable widgets.
 
 ## Como Clonar e Executar o Projeto / How to Clone and Run the Project
 
@@ -86,12 +85,10 @@ Follow the steps below to clone and run this project on your local machine:
     ```bash
     git clone https://github.com/Leonildo-Gomes/tic-tac-toe.git
     ```
-    Substitua `<URL_DO_SEU_REPOSITORIO>` pelo URL real do seu repositório Git.
-    Replace `<YOUR_REPOSITORY_URL>` with the actual URL of your Git repository.
 
 3.  **Navegar para o Diretório do Projeto / Navigate to the Project Directory**
     ```bash
-    cd tic_tac_toe
+    cd tic-tac-toe
     ```
 
 4.  **Obter as Dependências / Get Dependencies**
