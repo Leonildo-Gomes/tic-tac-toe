@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:tic_tac_toe/core/constants/constant.dart';
 import 'package:tic_tac_toe/core/constants/difficulty.dart';
 import 'package:tic_tac_toe/core/constants/player.dart';
@@ -104,9 +105,10 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
+      backgroundColor: theme.colorScheme.surfaceContainerLow,
       appBar: AppBar(
         title: const Text('Jogo da Velha'),
-        backgroundColor: theme.colorScheme.surface,
+        backgroundColor: theme.colorScheme.surfaceContainerLow,
         scrolledUnderElevation: 0,
         centerTitle: true,
       ),
@@ -122,7 +124,7 @@ class _GameScreenState extends State<GameScreen> {
                 botWins: _botWins,
                 botMark: _gameController.botMark,
                 isUserTurn: _gameController.isUserTurn,
-              ),
+              ).animate().fade(duration: 500.ms).slideY(begin: -0.2, end: 0),
               Expanded(child: Center(child: _buildGameBoard())),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
@@ -137,7 +139,7 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
                 ),
-              ),
+              ).animate().fade(duration: 500.ms).slideY(begin: 0.2, end: 0),
             ],
           ),
         ),
@@ -192,12 +194,12 @@ class _GameScreenState extends State<GameScreen> {
                     fontWeight: FontWeight.bold,
                     color: textColor,
                   ),
-                ),
+                ).animate(target: mark.isNotEmpty ? 1 : 0).scale(duration: 300.ms),
               ),
             ),
-          );
+          ).animate().fade(delay: (50 * index).ms, duration: 400.ms).slideY(begin: 0.5, end: 0);
         },
       ),
-    );
+    ).animate().fade(duration: 600.ms);
   }
 }

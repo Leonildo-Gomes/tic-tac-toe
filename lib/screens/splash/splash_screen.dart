@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:tic_tac_toe/screens/home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -30,32 +31,41 @@ class _SplashScreenState extends State<SplashScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surfaceContainerLowest,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/splash_logo.png',
-              //height: screenHeight * 0.2,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Jogo da Velha',
-              style: theme.textTheme.displayMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onSurface,
-              ),
-            ),
-            const SizedBox(height: 16),
-            CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                theme.colorScheme.primary,
-              ),
-            ),
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              theme.colorScheme.primary,
+              theme.colorScheme.secondary,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Jogo da Velha',
+                style: theme.textTheme.displayMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onPrimary,
+                ),
+              )
+                  .animate()
+                  .fade(duration: 800.ms, curve: Curves.easeIn)
+                  .slideY(begin: 0.5, end: 0, duration: 800.ms, curve: Curves.easeOut),
+              const SizedBox(height: 16),
+              const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              )
+                  .animate()
+                  .fade(delay: 1000.ms, duration: 500.ms)
+            ],
+          ),
         ),
       ),
-    );
+    ).animate().shimmer(duration: 1500.ms);
   }
 }

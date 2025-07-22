@@ -19,7 +19,7 @@ class DatabaseService {
     final path = join(dbPath, filePath);
     return openDatabase(
       path,
-      version: 2, // 1. Version incremented from 1 to 2
+      version: 3, // 1. Version incremented from 1 to 2
       onCreate: _createDb,
       onUpgrade: _onUpgrade, // 2. onUpgrade callback added
     );
@@ -33,7 +33,8 @@ class DatabaseService {
         ${History.columnWinner} TEXT NOT NULL,
         ${History.columnBoardState} TEXT NOT NULL,
         ${History.columnMode} TEXT NOT NULL,
-        ${History.columnDate} TEXT NOT NULL
+        ${History.columnDate} TEXT NOT NULL,
+        ${History.columnLevel} INTEGER NOT NULL
       )
     ''');
   }
@@ -45,7 +46,14 @@ class DatabaseService {
       // If the database is at version 1, we add the 'mode' column.
       // The default value 'CPU' must be in single quotes to be valid SQL.
       await db.execute(
-        "ALTER TABLE \${History.tableName} ADD COLUMN \${History.columnMode} TEXT NOT NULL DEFAULT 'CPU'",
+        "ALTER TABLE \${History.tableName} ADD COLUMN \${History.columnMode} TEXT NOT NULL",
+      );
+    }
+
+    if (oldVersion < 3) {
+      // If the database is at version 1, we add the 'level' column.
+      await db.execute(
+        "ALTER TABLE \${History.tableName} ADD COLUMN \${History.columnLevel} INTEGER",
       );
     }
   }
@@ -60,8 +68,6 @@ class DatabaseService {
   Future<List<History>> getHistory() async {
     final db = await instance.database;
     final List<Map<String, dynamic>> maps = await db.query(History.tableName);
-    print(maps.length);
-    print('Mapas:$maps');
     return maps.map((map) => History.fromMap(map)).toList();
   }
 
@@ -69,7 +75,15 @@ class DatabaseService {
   Future<void> clearHistory() async {
     final db = await instance.database;
     await db.delete(History.tableName);
-    print('Jogo deletado com sucesso');
+  }
+
+  Future<void> deleteHistory(int id) async {
+    final db = await instance.database;
+    await db.delete(
+      History.tableName,
+      where: '${History.columnId} = ?',
+      whereArgs: [id],
+    );
   }
 
   Future<void> close() async {

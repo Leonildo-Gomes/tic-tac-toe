@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:tic_tac_toe/core/constants/difficulty.dart';
 import 'package:tic_tac_toe/core/constants/player.dart';
 import 'package:tic_tac_toe/screens/game/game_screen.dart';
@@ -34,9 +35,10 @@ class _MenuScreenState extends State<MenuScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.surfaceContainerLow,
       appBar: AppBar(
         title: const Text('Nova Partida'),
-        backgroundColor: theme.colorScheme.surface,
+        backgroundColor: theme.colorScheme.surfaceContainerLow,
         scrolledUnderElevation: 0,
         centerTitle: true,
       ),
@@ -69,7 +71,10 @@ class _MenuScreenState extends State<MenuScreen> {
                           _selectedDifficulty = newSelection.first;
                         });
                       },
-                    ),
+                    )
+                        .animate()
+                        .fade(delay: 200.ms, duration: 500.ms)
+                        .slideY(begin: 0.2, end: 0),
                     const SizedBox(height: 32),
                     SelectionGroup<String>(
                       title: 'Escolha seu lado',
@@ -89,7 +94,10 @@ class _MenuScreenState extends State<MenuScreen> {
                           _selectedMark = newSelection.first;
                         });
                       },
-                    ),
+                    )
+                        .animate()
+                        .fade(delay: 400.ms, duration: 500.ms)
+                        .slideY(begin: 0.2, end: 0),
                     const SizedBox(height: 40),
                     FilledButton.icon(
                       icon: const Icon(Icons.play_arrow_rounded),
@@ -99,7 +107,10 @@ class _MenuScreenState extends State<MenuScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         textStyle: theme.textTheme.titleMedium,
                       ),
-                    ),
+                    )
+                        .animate()
+                        .fade(delay: 600.ms, duration: 500.ms)
+                        .slideY(begin: 0.2, end: 0),
                   ],
                 ),
               ),

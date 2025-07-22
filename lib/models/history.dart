@@ -4,6 +4,7 @@ class History {
   final String mode;
   final String boardState;
   final String date;
+  final int level;
 
   History({
     this.id,
@@ -11,6 +12,7 @@ class History {
     required this.mode,
     required this.boardState,
     required this.date,
+    required this.level,
   });
 
   static const String tableName = 'history';
@@ -19,6 +21,7 @@ class History {
   static const String columnMode = 'mode';
   static const String columnBoardState = 'boardState';
   static const String columnDate = 'date';
+  static const String columnLevel = 'level';
 
   Map<String, dynamic> toMap() {
     return {
@@ -27,6 +30,7 @@ class History {
       columnBoardState: boardState,
       columnMode: mode,
       columnDate: date, // Use the date from the object.
+      columnLevel: level,
     };
   }
 
@@ -37,6 +41,7 @@ class History {
       boardState: map[columnBoardState],
       mode: map[columnMode],
       date: map[columnDate],
+      level: map[columnLevel],
     );
   }
 

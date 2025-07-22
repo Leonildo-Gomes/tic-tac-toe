@@ -63,14 +63,13 @@ class GameController {
         gameOver = true;
         winner = first;
         matchedIndexes.addAll(combination);
-        savetHistory(first, userMark);
+        saveHistory(first, userMark); // Corrected call
         return;
       }
     }
     if (isDraw) {
       gameOver = true;
       winner = 'empate';
-      savetHistory('Empate', userMark);
     }
   }
 
@@ -238,13 +237,15 @@ class GameController {
     }
   }
 
-  Future<void> savetHistory(String winner, String userMark) async {
+  Future<void> saveHistory(String winner, String userMark) async {
     String mode = getGameResult(userMark);
+    // The check is now implicit, as this is only called on win.
     final history = History(
       winner: winner,
       mode: mode,
       boardState: board.join(','),
       date: DateTime.now().toIso8601String(),
+      level: difficulty.level,
     );
     await databaseService.insertHistory(history);
   }

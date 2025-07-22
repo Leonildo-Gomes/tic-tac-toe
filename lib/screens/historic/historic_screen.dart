@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:tic_tac_toe/models/history.dart';
 import 'package:tic_tac_toe/services/database_service.dart';
-import 'package:tic_tac_toe/widgets/card_history.dart';
+import 'package:tic_tac_toe/widgets/empty_history_view.dart';
+import 'package:tic_tac_toe/widgets/history_list_view.dart';
 
 class HistoricScreen extends StatefulWidget {
   const HistoricScreen({super.key});
@@ -14,17 +14,86 @@ class HistoricScreen extends StatefulWidget {
 
 class _HistoricScreenState extends State<HistoricScreen> {
   List<History> gameHistory = [];
+
   @override
   void initState() {
     super.initState();
     _loadHistory();
   }
 
+  // --- Data Handling Methods ---
+
   Future<void> _loadHistory() async {
     final List<History> history = await DatabaseService.instance.getHistory();
+    if (mounted) {
+      setState(() {
+        gameHistory = history.reversed.toList();
+      });
+    }
+  }
+
+  Future<void> _clearHistory() async {
+    await DatabaseService.instance.clearHistory();
+    _loadHistory();
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Histórico eliminado com sucesso!')),
+      );
+    }
+  }
+
+  Future<void> _deleteHistoryItem(int id, int index) async {
+    final historyItem = gameHistory[index];
     setState(() {
-      gameHistory = history;
+      gameHistory.removeAt(index);
     });
+
+    await DatabaseService.instance.deleteHistory(id);
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Partida eliminada.'),
+          action: SnackBarAction(
+            label: 'DESFAZER',
+            onPressed: () {
+              DatabaseService.instance
+                  .insertHistory(historyItem)
+                  .then((_) => _loadHistory());
+            },
+          ),
+        ),
+      );
+    }
+  }
+
+  // --- UI Methods ---
+
+  void _showClearHistoryConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmar Exclusão'),
+          content: const Text(
+            'Tem a certeza de que deseja eliminar todo o histórico de partidas? Esta ação não pode ser desfeita.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text('Eliminar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _clearHistory();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -36,57 +105,23 @@ class _HistoricScreenState extends State<HistoricScreen> {
         title: const Text('Histórico de Partidas'),
         backgroundColor: theme.colorScheme.surface,
         scrolledUnderElevation: 0,
+        actions: [
+          if (gameHistory.isNotEmpty)
+            IconButton(
+              icon: const Icon(Icons.delete_sweep_outlined),
+              tooltip: 'Eliminar todo o histórico',
+              onPressed: _showClearHistoryConfirmationDialog,
+            ),
+        ],
       ),
       body: SafeArea(
         child: gameHistory.isEmpty
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.history_toggle_off_rounded, size: 80),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Nenhuma partida encontrada',
-                      style: theme.textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Jogue uma partida para ver o histórico.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                itemCount: gameHistory.length,
-                itemBuilder: (context, index) {
-                  final history = gameHistory[index];
-                  final date = DateTime.parse(history.date);
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 6.0,
-                    ),
-                    child: CardHistory(
-                      name: history.winner == 'empate'
-                          ? 'Empate'
-                          : 'Vencedor: ${history.winner}',
-                      date: DateFormat('dd/MM/yyyy HH:mm').format(date),
-                      mode: history.mode,
-                      board: history.board,
-                    ),
-                  );
-                },
+            ? const EmptyHistoryView()
+            : HistoryListView(
+                gameHistory: gameHistory,
+                onDeleteItem: _deleteHistoryItem,
               ),
       ),
     );
   }
 }
-
-/*
- 
- 
-*/
