@@ -1,20 +1,14 @@
 import 'dart:math';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/core/constants/constant.dart';
 import 'package:tic_tac_toe/core/constants/difficulty.dart';
+import 'package:tic_tac_toe/models/game_state.dart';
 import 'package:tic_tac_toe/models/history.dart';
 import 'package:tic_tac_toe/services/database_service.dart';
 
-class GameController {
-  List<String> board = List.filled(Constant.boardSize, '');
-  List<int> matchedIndexes = [];
-  bool gameOver = false;
-  bool isUserTurn = true;
-  String? winner;
+class GameController extends Notifier<GameState> {
   final Random _random = Random();
-  final DatabaseService databaseService;
-  final Difficulty difficulty;
-  final String userMark;
 
   static const winningCombinations = [
     [0, 1, 2],
@@ -27,54 +21,82 @@ class GameController {
     [2, 4, 6],
   ];
 
-  GameController(this.databaseService, this.difficulty, this.userMark);
+  @override
+  GameState build() {
+    return GameState(
+      board: List.filled(Constant.boardSize, ''),
+      matchedIndexes: [],
+      gameOver: false,
+      isUserTurn: true,
+      winner: null,
+      difficulty: Difficulty.easy,
+      userMark: 'X',
+    );
+  }
 
-  bool get isDraw => !board.contains('') && winner == null;
-  String get botMark => userMark == 'X' ? 'O' : 'X';
+  void initGame(Difficulty difficulty, String userMark) {
+    state = GameState(
+      board: List.filled(Constant.boardSize, ''),
+      matchedIndexes: [],
+      gameOver: false,
+      isUserTurn: true,
+      winner: null,
+      difficulty: difficulty,
+      userMark: userMark,
+    );
+  }
+
+  bool get isDraw => !state.board.contains('') && state.winner == null;
+  String get botMark => state.userMark == 'X' ? 'O' : 'X';
 
   void resetGame() {
-    board = List.filled(Constant.boardSize, '');
-    gameOver = false;
-    matchedIndexes = [];
-    winner = null;
-    isUserTurn = true;
+    state = state.copyWith(
+      board: List.filled(Constant.boardSize, ''),
+      gameOver: false,
+      matchedIndexes: [],
+      winner: null,
+      isUserTurn: true,
+    );
   }
 
   void makeMove(int index) {
-    if (gameOver || board[index].isNotEmpty || !isUserTurn) {
+    if (state.gameOver || state.board[index].isNotEmpty || !state.isUserTurn) {
       return;
     }
 
-    board[index] = userMark;
-    isUserTurn = false;
+    final newBoard = List.of(state.board);
+    newBoard[index] = state.userMark;
+
+    state = state.copyWith(board: newBoard, isUserTurn: false);
     _updateGameState();
 
-    if (!gameOver) {
+    if (!state.gameOver) {
       computerMove();
     }
   }
 
   void _updateGameState() {
     for (final combination in winningCombinations) {
-      final first = board[combination[0]];
+      final first = state.board[combination[0]];
       if (first.isNotEmpty &&
-          first == board[combination[1]] &&
-          first == board[combination[2]]) {
-        gameOver = true;
-        winner = first;
-        matchedIndexes.addAll(combination);
-        saveHistory(first, userMark); // Corrected call
+          first == state.board[combination[1]] &&
+          first == state.board[combination[2]]) {
+        state = state.copyWith(
+          gameOver: true,
+          winner: first,
+          matchedIndexes: combination,
+        );
+        saveHistory(first, state.userMark);
         return;
       }
     }
     if (isDraw) {
-      gameOver = true;
-      winner = 'empate';
+      state = state.copyWith(gameOver: true, winner: 'empate');
     }
   }
 
   void computerMove() {
-    switch (difficulty) {
+    switch (state.difficulty) {
       case Difficulty.easy:
         _easyMove();
         break;
@@ -85,53 +107,56 @@ class GameController {
         _hardMove();
         break;
     }
-    if (!gameOver) {
-      isUserTurn = true;
+    if (!state.gameOver) {
+      state = state.copyWith(isUserTurn: true);
     }
   }
 
   void _easyMove() {
     final availableMoves = <int>[];
-    for (int i = 0; i < board.length; i++) {
-      if (board[i].isEmpty) {
+    for (int i = 0; i < state.board.length; i++) {
+      if (state.board[i].isEmpty) {
         availableMoves.add(i);
       }
     }
 
     if (availableMoves.isNotEmpty) {
       final move = availableMoves[_random.nextInt(availableMoves.length)];
-      board[move] = botMark;
+      final newBoard = List.of(state.board);
+      newBoard[move] = botMark;
+      state = state.copyWith(board: newBoard);
       _updateGameState();
     }
   }
 
   void _mediumMove() {
-    // 1. Tenta ganhar
     int? winningMove = _findWinningOrBlockingMove(botMark);
     if (winningMove != null) {
-      board[winningMove] = botMark;
+      final newBoard = List.of(state.board);
+      newBoard[winningMove] = botMark;
+      state = state.copyWith(board: newBoard);
       _updateGameState();
       return;
     }
 
-    // 2. Tenta bloquear o jogador
-    int? blockingMove = _findWinningOrBlockingMove(userMark);
+    int? blockingMove = _findWinningOrBlockingMove(state.userMark);
     if (blockingMove != null) {
-      board[blockingMove] = botMark;
+      final newBoard = List.of(state.board);
+      newBoard[blockingMove] = botMark;
+      state = state.copyWith(board: newBoard);
       _updateGameState();
       return;
     }
 
-    // 3. Se não, joga aleatoriamente
     _easyMove();
   }
 
   int? _findWinningOrBlockingMove(String mark) {
     for (final combination in winningCombinations) {
-      final marks = combination.map((index) => board[index]).toList();
+      final marks = combination.map((index) => state.board[index]).toList();
       if (marks.where((m) => m == mark).length == 2 && marks.contains('')) {
         final emptyIndex = combination.firstWhere(
-          (index) => board[index] == '',
+          (index) => state.board[index] == '',
         );
         return emptyIndex;
       }
@@ -143,11 +168,13 @@ class GameController {
     int bestMove = -1;
     int bestScore = -1000;
 
-    for (int i = 0; i < board.length; i++) {
-      if (board[i].isEmpty) {
-        board[i] = botMark;
-        int score = _minimax(board, 0, false, userMark, botMark);
-        board[i] = '';
+    final currentBoard = List.of(state.board);
+
+    for (int i = 0; i < currentBoard.length; i++) {
+      if (currentBoard[i].isEmpty) {
+        currentBoard[i] = botMark;
+        int score = _minimax(currentBoard, 0, false, state.userMark, botMark);
+        currentBoard[i] = '';
         if (score > bestScore) {
           bestScore = score;
           bestMove = i;
@@ -156,7 +183,9 @@ class GameController {
     }
 
     if (bestMove != -1) {
-      board[bestMove] = botMark;
+      final newBoard = List.of(state.board);
+      newBoard[bestMove] = botMark;
+      state = state.copyWith(board: newBoard);
       _updateGameState();
     }
   }
@@ -174,7 +203,7 @@ class GameController {
     }
 
     if (!currentBoard.contains('')) {
-      return 0; // Empate
+      return 0;
     }
 
     if (isMaximizing) {
@@ -230,7 +259,7 @@ class GameController {
     if (isDraw) {
       return '';
     }
-    if (winner == userMark) {
+    if (state.winner == userMark) {
       return 'Você';
     } else {
       return 'CPU';
@@ -238,15 +267,23 @@ class GameController {
   }
 
   Future<void> saveHistory(String winner, String userMark) async {
+    final databaseService = ref.read(databaseServiceProvider);
     String mode = getGameResult(userMark);
-    // The check is now implicit, as this is only called on win.
     final history = History(
       winner: winner,
       mode: mode,
-      boardState: board.join(','),
+      boardState: state.board.join(','),
       date: DateTime.now().toIso8601String(),
-      level: difficulty.level,
+      level: state.difficulty.level,
     );
     await databaseService.insertHistory(history);
   }
 }
+
+final gameControllerProvider = NotifierProvider<GameController, GameState>(
+  GameController.new,
+);
+
+final databaseServiceProvider = Provider<DatabaseService>((ref) {
+  return DatabaseService.instance;
+});

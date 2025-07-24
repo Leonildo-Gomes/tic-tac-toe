@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/core/theme/theme.dart';
 import 'package:tic_tac_toe/core/utils/util.dart';
 import 'package:tic_tac_toe/screens/historic/historic_screen.dart';
@@ -7,7 +8,7 @@ import 'package:tic_tac_toe/screens/menu/menu_screen.dart';
 import 'package:tic_tac_toe/screens/splash/splash_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

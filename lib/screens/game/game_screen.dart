@@ -1,17 +1,16 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:tic_tac_toe/core/constants/constant.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/core/constants/difficulty.dart';
-import 'package:tic_tac_toe/core/constants/player.dart';
 import 'package:tic_tac_toe/core/controllers/game_controller.dart';
-import 'package:tic_tac_toe/services/database_service.dart';
+import 'package:tic_tac_toe/models/game_state.dart';
 import 'package:tic_tac_toe/widgets/end_game_dialog.dart';
+import 'package:tic_tac_toe/widgets/game_board.dart';
 import 'package:tic_tac_toe/widgets/score_indicator.dart';
 
-class GameScreen extends StatefulWidget {
+class GameScreen extends ConsumerStatefulWidget {
   static const String routeName = 'GameScreen';
   final String userMark;
   final Difficulty selectedDifficulty;
@@ -23,12 +22,10 @@ class GameScreen extends StatefulWidget {
   });
 
   @override
-  State<GameScreen> createState() => _GameScreenState();
+  ConsumerState<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
-  late GameController _gameController;
-  final DatabaseService databaseService = DatabaseService.instance;
+class _GameScreenState extends ConsumerState<GameScreen> {
   final Random _random = Random();
   int _userWins = 0;
   int _botWins = 0;
@@ -36,67 +33,45 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeGame();
-  }
-
-  void _initializeGame() {
-    _gameController = GameController(
-      databaseService,
-      widget.selectedDifficulty,
-      widget.userMark,
-    );
-    final bool userPlaysFirst = _random.nextBool();
-
-    if (!userPlaysFirst) {
-      _gameController.isUserTurn = false;
-      Timer(
-        const Duration(milliseconds: 500),
-        () => setState(() => _gameController.computerMove()),
-      );
-    }
-  }
-
-  void _resetGame() {
-    setState(() {
-      _gameController.resetGame();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeGame();
     });
   }
 
+  void _initializeGame() {
+    final gameNotifier = ref.read(gameControllerProvider.notifier);
+    gameNotifier.initGame(widget.selectedDifficulty, widget.userMark);
+
+    final bool userPlaysFirst = _random.nextBool();
+    if (!userPlaysFirst) {
+      gameNotifier.computerMove();
+    }
+  }
+
+  void _resetGame() {
+    ref.read(gameControllerProvider.notifier).resetGame();
+    _initializeGame();
+  }
+
   void _handleTap(int index) {
-    if (_gameController.gameOver ||
-        !_gameController.isUserTurn ||
-        _gameController.board[index].isNotEmpty) {
-      return;
-    }
-
-    setState(() {
-      _gameController.makeMove(index);
-      if (_gameController.gameOver) {
-        _updateScores();
-        _showEndGameDialog();
-      }
-    });
+    final gameNotifier = ref.read(gameControllerProvider.notifier);
+    gameNotifier.makeMove(index);
   }
 
-  void _updateScores() {
-    if (_gameController.winner == widget.userMark) {
-      _userWins++;
-    } else if (_gameController.winner != null &&
-        _gameController.winner != 'empate') {
-      _botWins++;
+  void _updateScores(String? winner) {
+    if (winner == widget.userMark) {
+      setState(() => _userWins++);
+    } else if (winner != null && winner != 'empate') {
+      setState(() => _botWins++);
     }
   }
 
-  void _showEndGameDialog() {
+  void _showEndGameDialog(String? winner) {
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return EndGameDialog(
-          winner: _gameController.winner,
-          onPlayAgain: _resetGame,
-        );
+        return EndGameDialog(winner: winner, onPlayAgain: _resetGame);
       },
     );
   }
@@ -104,6 +79,16 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final gameState = ref.watch(gameControllerProvider);
+    final gameNotifier = ref.read(gameControllerProvider.notifier);
+
+    ref.listen<GameState>(gameControllerProvider, (previous, next) {
+      if (next.gameOver && !previous!.gameOver) {
+        _updateScores(next.winner);
+        _showEndGameDialog(next.winner);
+      }
+    });
+
     return Scaffold(
       backgroundColor: theme.colorScheme.surfaceContainerLow,
       appBar: AppBar(
@@ -122,10 +107,14 @@ class _GameScreenState extends State<GameScreen> {
                 userMark: widget.userMark,
                 userWins: _userWins,
                 botWins: _botWins,
-                botMark: _gameController.botMark,
-                isUserTurn: _gameController.isUserTurn,
+                botMark: gameNotifier.botMark,
+                isUserTurn: gameState.isUserTurn,
               ).animate().fade(duration: 500.ms).slideY(begin: -0.2, end: 0),
-              Expanded(child: Center(child: _buildGameBoard())),
+              Expanded(
+                child: Center(
+                  child: GameBoard(gameState: gameState, onTileTap: _handleTap),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: OutlinedButton.icon(
@@ -145,61 +134,5 @@ class _GameScreenState extends State<GameScreen> {
         ),
       ),
     );
-  }
-
-  Widget _buildGameBoard() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final boardSize = screenWidth > 600 ? 400.0 : screenWidth * 0.85;
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: boardSize, maxHeight: boardSize),
-      child: GridView.builder(
-        itemCount: Constant.boardSize,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-        ),
-        itemBuilder: (context, index) {
-          final mark = _gameController.board[index];
-          final isMatched = _gameController.matchedIndexes.contains(index);
-
-          final Color markColor;
-          if (mark == Player.playerX) {
-            markColor = colorScheme.primary;
-          } else if (mark == Player.playerO) {
-            markColor = colorScheme.tertiary;
-          } else {
-            markColor = Colors.transparent; // No color for empty cells
-          }
-
-          final cellColor = isMatched
-              ? colorScheme.primary
-              : colorScheme.surfaceContainerHigh;
-          final textColor = isMatched ? colorScheme.onPrimary : markColor;
-
-          return Material(
-            color: cellColor,
-            borderRadius: BorderRadius.circular(16),
-            child: InkWell(
-              onTap: () => _handleTap(index),
-              borderRadius: BorderRadius.circular(16),
-              child: Center(
-                child: Text(
-                  mark,
-                  style: textTheme.displayLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: textColor,
-                  ),
-                ).animate(target: mark.isNotEmpty ? 1 : 0).scale(duration: 300.ms),
-              ),
-            ),
-          ).animate().fade(delay: (50 * index).ms, duration: 400.ms).slideY(begin: 0.5, end: 0);
-        },
-      ),
-    ).animate().fade(duration: 600.ms);
   }
 }

@@ -76,7 +76,7 @@ class CardHistory extends StatelessWidget {
         _buildMetadataRow(
           context,
           icon: mode == 'CPU' ? Icons.computer_outlined : Icons.person_outline,
-          text: 'Modo: $mode (Nível $level)',
+          text: 'Nível $level',
         ),
         const SizedBox(height: 4),
         _buildMetadataRow(

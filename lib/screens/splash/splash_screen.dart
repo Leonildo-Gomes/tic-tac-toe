@@ -28,16 +28,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final screenHeight = MediaQuery.of(context).size.height;
+    //final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              theme.colorScheme.primary,
-              theme.colorScheme.secondary,
-            ],
+            colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -47,21 +44,24 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Jogo da Velha',
-                style: theme.textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onPrimary,
-                ),
-              )
+                    'Jogo da Velha',
+                    style: theme.textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onPrimary,
+                    ),
+                  )
                   .animate()
                   .fade(duration: 800.ms, curve: Curves.easeIn)
-                  .slideY(begin: 0.5, end: 0, duration: 800.ms, curve: Curves.easeOut),
+                  .slideY(
+                    begin: 0.5,
+                    end: 0,
+                    duration: 800.ms,
+                    curve: Curves.easeOut,
+                  ),
               const SizedBox(height: 16),
               const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              )
-                  .animate()
-                  .fade(delay: 1000.ms, duration: 500.ms)
+              ).animate().fade(delay: 1000.ms, duration: 500.ms),
             ],
           ),
         ),
