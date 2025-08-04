@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 
 class PlayerScoreCard extends StatelessWidget {
   final String label;
@@ -45,7 +46,7 @@ class PlayerScoreCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '$score Vitórias',
+            context.l10n.scoreWins(score),
             style: textTheme.bodyMedium?.copyWith(color: textColor),
           ),
         ],

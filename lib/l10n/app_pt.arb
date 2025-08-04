@@ -1,0 +1,82 @@
+{
+    "@@locale": "pt",
+    "appTitle": "Jogo da Velha",
+    "challengeYourself": "Desafie-se a si mesmo!",
+    "startGame": "Iniciar Jogo",
+    "history": "Histórico",
+    "game": "Jogo",
+    "restartGame": "Reiniciar Jogo",
+    "drawMessage": "Empate!",
+    "you": "Você",
+    "cpu": "CPU",
+    "newGame": "Nova Partida",
+    "gameLevel": "Nível de Jogo",
+    "chooseYourSide": "Escolha seu lado",
+    "difficultyEasy": "Fácil",
+    "difficultyMedium": "Médio",
+    "difficultyHard": "Difícil",
+    "winnerMessage": "O vencedor é {playerName}!",
+    "@winnerMessage": {
+        "description": "A mensagem mostrada quando um jogador vence.",
+        "placeholders": {
+            "playerName": {
+                "type": "String",
+                "example": "Você"
+            }
+        }
+    },
+    "scoreWins": "{count, plural, one{1 Vitória} other{{count} Vitórias}}",
+    "@scoreWins": {
+        "description": "Texto para exibir o número de vitórias.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "historyGame": "Histórico de Partidas",
+    "clearAllHistory": "Eliminar todo o histórico",
+    "historyCleared": "Histórico eliminado com sucesso!",
+    "matchDeleted": "Partida eliminada.",
+    "undo": "DESFAZER",
+    "confirmExclusion": "Confirmar Exclusão",
+    "confirmClearHistory": "Tem a certeza de que deseja eliminar todo o histórico de partidas? Esta ação não pode ser desfeita.",
+    "cancel": "Cancelar",
+    "clear": "Eliminar",
+    "playerYou": "Você",
+    "playerCPU": "CPU",
+    "draw": "Empate",
+    "level": "Nível",
+    "winnerIs": "Vencedor: {playerName}",
+    "@winnerIs": {
+        "description": "Mensagem indicando o vencedor.",
+        "placeholders": {
+            "playerName": {
+                "type": "String",
+                "example": "Você"
+            }
+        }
+    },
+    "noMatchesFound": "Nenhuma partida encontrada",
+    "playAGameToSeeHistory": "Jogue uma partida para ver o histórico.",
+    "winner": "VENCEDOR",
+    "tie": "EMPATE",
+    "playAgain": "Jogar Novamente",
+    "playAs": "Jogar como {playerMark}",
+    "@playAs": {
+        "description": "Mensagem para jogar com uma marca específica.",
+        "placeholders": {
+            "playerMark": {
+                "type": "String",
+                "example": "X"
+            }
+        }
+    },
+    "gameSavedSuccessfully": "Jogo salvo com sucesso",
+    "settings": "Configurações",
+    "language": "Idioma",
+    "theme": "Tema",
+    "sound": "Som",
+    "themeSelectionPlaceholder": "Selecionar tema",
+    "soundSettingsPlaceholder": "Selecionar som"
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 import 'package:tic_tac_toe/screens/home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -44,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                    'Jogo da Velha',
+                    context.l10n.appTitle,
                     style: theme.textTheme.displayMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.onPrimary,

@@ -44,6 +44,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-GEMINI.md
-ROADMAP.md
+#GEMINI.md
+#ROADMAP.md
 ARCHITECTURE.md

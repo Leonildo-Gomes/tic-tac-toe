@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 import 'package:tic_tac_toe/models/history.dart';
 import 'package:tic_tac_toe/services/database_service.dart';
 import 'package:tic_tac_toe/widgets/empty_history_view.dart';
@@ -36,9 +37,9 @@ class _HistoricScreenState extends State<HistoricScreen> {
     await DatabaseService.instance.clearHistory();
     _loadHistory();
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Histórico eliminado com sucesso!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.l10n.historyCleared)));
     }
   }
 
@@ -53,9 +54,9 @@ class _HistoricScreenState extends State<HistoricScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Partida eliminada.'),
+          content: Text(context.l10n.matchDeleted),
           action: SnackBarAction(
-            label: 'DESFAZER',
+            label: context.l10n.undo,
             onPressed: () {
               DatabaseService.instance
                   .insertHistory(historyItem)
@@ -74,17 +75,15 @@ class _HistoricScreenState extends State<HistoricScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirmar Exclusão'),
-          content: const Text(
-            'Tem a certeza de que deseja eliminar todo o histórico de partidas? Esta ação não pode ser desfeita.',
-          ),
+          title: Text(context.l10n.confirmExclusion),
+          content: Text(context.l10n.confirmClearHistory),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancelar'),
+              child: Text(context.l10n.cancel),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: const Text('Eliminar'),
+              child: Text(context.l10n.clear),
               onPressed: () {
                 Navigator.of(context).pop();
                 _clearHistory();
@@ -102,14 +101,14 @@ class _HistoricScreenState extends State<HistoricScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Histórico de Partidas'),
+        title: Text(context.l10n.historyGame),
         backgroundColor: theme.colorScheme.surface,
         scrolledUnderElevation: 0,
         actions: [
           if (gameHistory.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.delete_sweep_outlined),
-              tooltip: 'Eliminar todo o histórico',
+              tooltip: context.l10n.clearAllHistory,
               onPressed: _showClearHistoryConfirmationDialog,
             ),
         ],

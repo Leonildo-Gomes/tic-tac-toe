@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:tic_tac_toe/core/constants/difficulty.dart';
 import 'package:tic_tac_toe/core/constants/player.dart';
+import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 import 'package:tic_tac_toe/screens/game/game_screen.dart';
 import 'package:tic_tac_toe/widgets/selection_group.dart';
 
@@ -37,7 +38,7 @@ class _MenuScreenState extends State<MenuScreen> {
     return Scaffold(
       backgroundColor: theme.colorScheme.surfaceContainerLow,
       appBar: AppBar(
-        title: const Text('Nova Partida'),
+        title: Text(context.l10n.newGame),
         backgroundColor: theme.colorScheme.surfaceContainerLow,
         scrolledUnderElevation: 0,
         centerTitle: true,
@@ -58,11 +59,11 @@ class _MenuScreenState extends State<MenuScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SelectionGroup<Difficulty>(
-                      title: 'Nível de Jogo',
+                      title: context.l10n.gameLevel,
                       segments: Difficulty.values.map((level) {
                         return ButtonSegment<Difficulty>(
                           value: level,
-                          label: Text(level.label),
+                          label: Text(level.getLabel(context)),
                         );
                       }).toList(),
                       selected: {_selectedDifficulty},
@@ -77,7 +78,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         .slideY(begin: 0.2, end: 0),
                     const SizedBox(height: 32),
                     SelectionGroup<String>(
-                      title: 'Escolha seu lado',
+                      title: context.l10n.chooseYourSide,
                       segments: const <ButtonSegment<String>>[
                         ButtonSegment<String>(
                           value: Player.playerX,
@@ -101,7 +102,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     const SizedBox(height: 40),
                     FilledButton.icon(
                       icon: const Icon(Icons.play_arrow_rounded),
-                      label: const Text('Iniciar Jogo'),
+                      label: Text(context.l10n.startGame),
                       onPressed: _startGame,
                       style: FilledButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),

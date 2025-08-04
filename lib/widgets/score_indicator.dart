@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 import 'package:tic_tac_toe/widgets/player_score_card.dart';
 
 class ScoreIndicator extends StatelessWidget {
@@ -24,7 +25,7 @@ class ScoreIndicator extends StatelessWidget {
       children: [
         Expanded(
           child: PlayerScoreCard(
-            label: 'Você ($userMark)',
+            label: '${context.l10n.you} ($userMark)',
             score: userWins,
             isTurn: isUserTurn,
           ),
@@ -32,7 +33,7 @@ class ScoreIndicator extends StatelessWidget {
         const SizedBox(width: 16),
         Expanded(
           child: PlayerScoreCard(
-            label: 'Bot ($botMark)',
+            label: '${context.l10n.cpu} ($botMark)',
             score: botWins,
             isTurn: !isUserTurn,
           ),

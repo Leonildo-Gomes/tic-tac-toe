@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/core/constants/difficulty.dart';
 import 'package:tic_tac_toe/core/controllers/game_controller.dart';
+import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 import 'package:tic_tac_toe/models/game_state.dart';
 import 'package:tic_tac_toe/widgets/end_game_dialog.dart';
 import 'package:tic_tac_toe/widgets/game_board.dart';
@@ -92,7 +93,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     return Scaffold(
       backgroundColor: theme.colorScheme.surfaceContainerLow,
       appBar: AppBar(
-        title: const Text('Jogo da Velha'),
+        title: Text(context.l10n.appTitle),
         backgroundColor: theme.colorScheme.surfaceContainerLow,
         scrolledUnderElevation: 0,
         centerTitle: true,
@@ -120,7 +121,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                 child: OutlinedButton.icon(
                   onPressed: _resetGame,
                   icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Reiniciar Jogo'),
+                  label: Text(context.l10n.restartGame),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,

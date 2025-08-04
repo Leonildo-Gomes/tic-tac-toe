@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 
 class EndGameDialog extends StatelessWidget {
   final String? winner;
@@ -17,7 +18,7 @@ class EndGameDialog extends StatelessWidget {
 
     final isWinner = winner != null && winner != 'empate';
     final isTie = winner == 'empate';
-    final title = isWinner ? 'VENCEDOR' : 'EMPATE';
+    final title = isWinner ? context.l10n.winner : context.l10n.draw;
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
@@ -57,7 +58,7 @@ class EndGameDialog extends StatelessWidget {
                 onPlayAgain(); // Then call the callback
               },
               icon: const Icon(Icons.replay_rounded),
-              label: const Text('Jogar Novamente'),
+              label: Text(context.l10n.playAgain),
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,

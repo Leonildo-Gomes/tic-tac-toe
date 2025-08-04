@@ -27,7 +27,11 @@ class HistoryListView extends StatelessWidget {
     );
   }
 
-  Widget _buildDismissibleItem(BuildContext context, History history, int index) {
+  Widget _buildDismissibleItem(
+    BuildContext context,
+    History history,
+    int index,
+  ) {
     return Dismissible(
       key: ValueKey(history.id),
       direction: DismissDirection.endToStart,
@@ -39,10 +43,12 @@ class HistoryListView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
         child: CardHistory(
           winner: history.winner,
-          date: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(history.date)),
+          date: DateFormat(
+            'dd/MM/yyyy HH:mm',
+          ).format(DateTime.parse(history.date)),
           mode: history.mode,
           board: history.board,
-          level: Difficulty.fromLevel(history.level).label,
+          level: Difficulty.fromLevel(history.level).getLabel(context),
         ),
       ),
     );
@@ -57,10 +63,7 @@ class HistoryListView extends StatelessWidget {
       ),
       alignment: Alignment.centerRight,
       padding: const EdgeInsets.only(right: 20.0),
-      child: const Icon(
-        Icons.delete_outline,
-        color: Colors.white,
-      ),
+      child: const Icon(Icons.delete_outline, color: Colors.white),
     );
   }
 }

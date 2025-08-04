@@ -1,0 +1,82 @@
+{
+    "@@locale": "en",
+    "appTitle": "Tic Tac Toe",
+    "challengeYourself": "Challenge yourself!",
+    "startGame": "Start Game",
+    "history": "History",
+    "game": "Game",
+    "restartGame": "Restart Game",
+    "drawMessage": "It's a Draw!",
+    "you": "You",
+    "cpu": "CPU",
+    "newGame": "New Game",
+    "gameLevel": "Game Level",
+    "chooseYourSide": "Choose your side",
+    "difficultyEasy": "Easy",
+    "difficultyMedium": "Medium",
+    "difficultyHard": "Hard",
+    "winnerMessage": "The winner is {playerName}!",
+    "@winnerMessage": {
+        "description": "The message shown when a player wins.",
+        "placeholders": {
+            "playerName": {
+                "type": "String",
+                "example": "You"
+            }
+        }
+    },
+    "scoreWins": "{count, plural, one{1 Win} other{{count} Wins}}",
+    "@scoreWins": {
+        "description": "Text to display the number of wins.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "historyGame": "Game History",
+    "clearAllHistory": "Clear all history",
+    "historyCleared": "History cleared successfully!",
+    "matchDeleted": "Match deleted.",
+    "undo": "UNDO",
+    "confirmExclusion": "Confirm Deletion",
+    "confirmClearHistory": "Are you sure you want to delete all game history? This action cannot be undone.",
+    "cancel": "Cancel",
+    "clear": "Delete",
+    "playerYou": "You",
+    "playerCPU": "CPU",
+    "draw": "Draw",
+    "level": "Level",
+    "winnerIs": "Winner: {playerName}",
+    "@winnerIs": {
+        "description": "Message indicating the winner.",
+        "placeholders": {
+            "playerName": {
+                "type": "String",
+                "example": "You"
+            }
+        }
+    },
+    "noMatchesFound": "No matches found",
+    "playAGameToSeeHistory": "Play a game to see history.",
+    "winner": "WINNER",
+    "tie": "TIE",
+    "playAgain": "Play Again",
+    "playAs": "Play as {playerMark}",
+    "@playAs": {
+        "description": "Message for playing as a specific mark.",
+        "placeholders": {
+            "playerMark": {
+                "type": "String",
+                "example": "X"
+            }
+        }
+    },
+    "gameSavedSuccessfully": "Game saved successfully",
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "sound": "Sound",
+    "themeSelectionPlaceholder": "Select theme",
+    "soundSettingsPlaceholder": "Select sound"
+}

@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/core/constants/player.dart';
+import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 
-/// A redesigned, visually enhanced card to display a summary of a past game.
-///
-/// As a design expert, I've revamped this widget to be more intuitive and
-/// aesthetically pleasing. Key improvements include:
-/// - A colored accent border that immediately signals the game's outcome.
-/// - Improved visual hierarchy, making the winner the focal point.
-/// - Better-organized metadata with icons for scannability.
-/// - Refined spacing and layout for a cleaner, more modern look.
 class CardHistory extends StatelessWidget {
   final String winner;
   final String date;
@@ -66,7 +59,7 @@ class CardHistory extends StatelessWidget {
 
   /// Builds the main information section of the card.
   Widget _buildGameInfo(BuildContext context, Color accentColor, bool isDraw) {
-    final textTheme = Theme.of(context).textTheme;
+    //final textTheme = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +69,7 @@ class CardHistory extends StatelessWidget {
         _buildMetadataRow(
           context,
           icon: mode == 'CPU' ? Icons.computer_outlined : Icons.person_outline,
-          text: 'Nível $level',
+          text: '${context.l10n.level}: $level',
         ),
         const SizedBox(height: 4),
         _buildMetadataRow(
@@ -95,7 +88,9 @@ class CardHistory extends StatelessWidget {
     bool isDraw,
   ) {
     final textTheme = Theme.of(context).textTheme;
-    final title = isDraw ? 'Empate' : 'Vencedor: $winner';
+    final title = isDraw
+        ? context.l10n.draw
+        : '${context.l10n.winner}: $winner';
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,

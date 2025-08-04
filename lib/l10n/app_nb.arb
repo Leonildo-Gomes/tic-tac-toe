@@ -1,0 +1,82 @@
+{
+    "@@locale": "nb",
+    "appTitle": "Tic Tac Toe",
+    "challengeYourself": "Utfordre deg selv!",
+    "startGame": "Start spill",
+    "history": "Historikk",
+    "game": "Spill",
+    "restartGame": "Start på nytt",
+    "drawMessage": "Uavgjort!",
+    "you": "Du",
+    "cpu": "CPU",
+    "newGame": "Nytt spill",
+    "gameLevel": "Spillnivå",
+    "chooseYourSide": "Velg din side",
+    "difficultyEasy": "Enkel",
+    "difficultyMedium": "Middels",
+    "difficultyHard": "Vanskelig",
+    "winnerMessage": "Vinneren er {playerName}!",
+    "@winnerMessage": {
+        "description": "Meldingen som vises når en spiller vinner.",
+        "placeholders": {
+            "playerName": {
+                "type": "String",
+                "example": "Du"
+            }
+        }
+    },
+    "scoreWins": "{count, plural, one{1 Seier} other{{count} Seire}}",
+    "@scoreWins": {
+        "description": "Tekst for å vise antall seire.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "historyGame": "Spillhistorikk",
+    "clearAllHistory": "Slett all historikk",
+    "historyCleared": "Historikken er slettet!",
+    "matchDeleted": "Kamp slettet.",
+    "undo": "ANGRE",
+    "confirmExclusion": "Bekreft sletting",
+    "confirmClearHistory": "Er du sikker på at du vil slette all spillhistorikk? Handlingen kan ikke angres.",
+    "cancel": "Avbryt",
+    "clear": "Slett",
+    "playerYou": "Du",
+    "playerCPU": "CPU",
+    "draw": "Uavgjort",
+    "level": "Nivå",
+    "winnerIs": "Vinner: {playerName}",
+    "@winnerIs": {
+        "description": "Melding som indikerer vinneren.",
+        "placeholders": {
+            "playerName": {
+                "type": "String",
+                "example": "Du"
+            }
+        }
+    },
+    "noMatchesFound": "Ingen kamper funnet",
+    "playAGameToSeeHistory": "Spill et spill for å se historikk.",
+    "winner": "VINNER",
+    "tie": "UAVGJORT",
+    "playAgain": "Spill igjen",
+    "playAs": "Spill som {playerMark}",
+    "@playAs": {
+        "description": "Melding for å spille som et spesifikt merke.",
+        "placeholders": {
+            "playerMark": {
+                "type": "String",
+                "example": "X"
+            }
+        }
+    },
+    "gameSavedSuccessfully": "Spill lagret vellykket",
+    "settings": "Innstillinger",
+    "language": "Språk",
+    "theme": "Tema",
+    "sound": "Lyd",
+    "themeSelectionPlaceholder": "Velg tema",
+    "soundSettingsPlaceholder": "Velg lyd"
+}
