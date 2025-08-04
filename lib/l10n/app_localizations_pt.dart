@@ -154,4 +154,20 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get soundSettingsPlaceholder => 'Selecionar som';
+
+  @override
+  String get themeLight => 'Claro';
+
+  @override
+  String get themeDark => 'Escuro';
+
+  @override
+  String get themeSystem => 'Sistema';
+
+  @override
+  String get soundEffects => 'Efeitos Sonoros';
+
+  @override
+  String get soundEffectsDescription =>
+      'Ativar ou desativar os efeitos sonoros do jogo';
 }

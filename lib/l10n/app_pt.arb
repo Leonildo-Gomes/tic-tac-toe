@@ -78,5 +78,10 @@
     "theme": "Tema",
     "sound": "Som",
     "themeSelectionPlaceholder": "Selecionar tema",
-    "soundSettingsPlaceholder": "Selecionar som"
+    "soundSettingsPlaceholder": "Selecionar som",
+    "themeLight": "Claro",
+    "themeDark": "Escuro",
+    "themeSystem": "Sistema",
+    "soundEffects": "Efeitos Sonoros",
+    "soundEffectsDescription": "Ativar ou desativar os efeitos sonoros do jogo"
 }

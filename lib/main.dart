@@ -6,6 +6,7 @@ import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 import 'package:tic_tac_toe/core/utils/util.dart';
 import 'package:tic_tac_toe/l10n/app_localizations.dart';
 import 'package:tic_tac_toe/providers/locale/locale_provider.dart';
+import 'package:tic_tac_toe/providers/theme/theme_provider.dart';
 import 'package:tic_tac_toe/screens/historic/historic_screen.dart';
 import 'package:tic_tac_toe/screens/home/home_screen.dart';
 import 'package:tic_tac_toe/screens/menu/menu_screen.dart';
@@ -22,12 +23,14 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(localeProvider);
+    final theme = ref.watch(themeProvider);
     TextTheme textTheme = createTextTheme(context, "Roboto", "Luckiest Guy");
     MaterialTheme appTheme = MaterialTheme(textTheme);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: locale,
+      themeMode: theme.themeMode,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

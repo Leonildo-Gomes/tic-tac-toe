@@ -78,5 +78,10 @@
     "theme": "Tema",
     "sound": "Lyd",
     "themeSelectionPlaceholder": "Velg tema",
-    "soundSettingsPlaceholder": "Velg lyd"
+    "soundSettingsPlaceholder": "Velg lyd",
+    "themeLight": "Lys",
+    "themeDark": "Mørk",
+    "themeSystem": "System",
+    "soundEffects": "Lydeffekter",
+    "soundEffectsDescription": "Aktiver eller deaktiver spillets lydeffekter"
 }

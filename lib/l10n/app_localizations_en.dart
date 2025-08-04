@@ -154,4 +154,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get soundSettingsPlaceholder => 'Select sound';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get soundEffects => 'Sound Effects';
+
+  @override
+  String get soundEffectsDescription => 'Enable or disable game sound effects';
 }

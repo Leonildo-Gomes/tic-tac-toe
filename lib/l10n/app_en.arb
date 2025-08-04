@@ -78,5 +78,10 @@
     "theme": "Theme",
     "sound": "Sound",
     "themeSelectionPlaceholder": "Select theme",
-    "soundSettingsPlaceholder": "Select sound"
+    "soundSettingsPlaceholder": "Select sound",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "soundEffects": "Sound Effects",
+    "soundEffectsDescription": "Enable or disable game sound effects"
 }

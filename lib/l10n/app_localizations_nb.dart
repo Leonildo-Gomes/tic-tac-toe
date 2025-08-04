@@ -154,4 +154,20 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String get soundSettingsPlaceholder => 'Velg lyd';
+
+  @override
+  String get themeLight => 'Lys';
+
+  @override
+  String get themeDark => 'Mørk';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get soundEffects => 'Lydeffekter';
+
+  @override
+  String get soundEffectsDescription =>
+      'Aktiver eller deaktiver spillets lydeffekter';
 }
