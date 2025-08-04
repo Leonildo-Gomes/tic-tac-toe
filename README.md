@@ -1,104 +1,105 @@
 # Jogo da Velha (Tic Tac Toe)
 
-Um jogo da velha moderno e completo, desenvolvido em Flutter, com múltiplos níveis de dificuldade e um sistema de histórico de partidas.
+Um jogo da velha moderno e completo, desenvolvido em Flutter, com um design elegante, múltiplas opções de personalização e um sistema de histórico de partidas.
 
-A modern and complete tic-tac-toe game developed in Flutter, featuring multiple difficulty levels and a match history system.
+*A modern and complete tic-tac-toe game developed in Flutter, featuring an elegant design, multiple customization options, and a match history system.*
 
-## Descrição / Description
+---
 
-Este projeto é uma implementação completa do clássico Jogo da Velha, onde o jogador pode desafiar a CPU. A aplicação destaca-se por um design limpo e intuitivo (Material Design 3), animações fluidas e funcionalidades robustas, como a persistência do histórico de vitórias numa base de dados local.
+## ✨ Funcionalidades / Features
 
-This project is a complete implementation of the classic Tic Tac Toe game, where the player can challenge the CPU. The application stands out for its clean and intuitive design (Material Design 3), smooth animations, and robust features, such as persisting the history of victories in a local database.
+-   **Modo de Jogo Individual:** Desafie a CPU em três níveis de dificuldade: Fácil, Médio e Difícil.
+    -   *Challenge the CPU with three difficulty levels: Easy, Medium, and Hard.*
+-   **Personalização de Tema:** Escolha entre os temas Claro, Escuro ou o padrão do Sistema.
+    -   *Choose between Light, Dark, or the System default theme.*
+-   **Suporte Multilíngue:** Interface disponível em Português, Inglês e Norueguês.
+    -   *Interface available in Portuguese, English, and Norwegian.*
+-   **Histórico de Partidas:** Todas as vitórias são guardadas localmente para que possa rever o seu desempenho.
+    -   *All victories are saved locally so you can review your performance.*
+-   **Gestão de Histórico:** Elimine partidas individuais com um simples deslizar ou apague todo o histórico de uma só vez.
+    -   *Delete individual matches with a simple swipe or clear the entire history at once.*
+-   **Design Moderno:** Interface limpa e intuitiva, construída com Material Design 3 e animações fluidas.
+    -   *Clean and intuitive interface, built with Material Design 3 and smooth animations.*
 
-## Funcionalidades / Features
+---
 
--   **Modo de Jogo Individual:** Desafie a CPU em três níveis de dificuldade: Fácil, Médio e Difícil. / **Single Player Mode:** Challenge the CPU with three difficulty levels: Easy, Medium, and Hard.
--   **Histórico de Partidas:** Todas as vitórias são guardadas localmente para que possa rever o seu desempenho. / **Match History:** All victories are saved locally so you can review your performance.
--   **Gestão de Histórico:** Elimine partidas individuais com um simples deslizar ou apague todo o histórico de uma só vez. / **History Management:** Delete individual matches with a simple swipe or clear the entire history at once.
--   **Design Moderno:** Interface limpa e intuitiva, construída com Material Design 3 e animações fluidas. / **Modern Design:** Clean and intuitive interface, built with Material Design 3 and smooth animations.
+## 📸 Screenshots
 
-## Screenshots
-
-| Tela Inicial | Menu de Jogo | Tela de Jogo |
+| Home (Light) | Home (Dark) | Menu |
 | :---: | :---: | :---: |
-| ![Tela Inicial](screenshot/home_screen.jpeg) | ![Menu de Jogo](screenshot/menu_screen.jpeg) | ![Tela de Jogo](screenshot/game_screen.jpeg) |
+| ![Home Screen Light](screenshot/home_screen.jpeg) | ![Home Screen Dark](screenshot/home_screen_dark.jpeg) | ![Menu Screen](screenshot/menu_screen.jpeg) |
 
-| Tela de Vitória | Histórico de Partidas |
+| Jogo (Light) | Jogo (Dark) | Vitória |
+| :---: | :---: | :---: |
+| ![Game Screen Light](screenshot/game_screen.jpeg) | ![Game Screen Dark](screenshot/game_screen_dark.jpeg) | ![Winner Screen](screenshot/winner_screen.jpeg) |
+
+| Histórico | Configurações |
 | :---: | :---: |
-| ![Tela de Vitória](screenshot/winner_screen.jpeg) | ![Histórico de Partidas](screenshot/historic_screen.jpeg) |
+| ![History Screen](screenshot/historic_screen.jpeg) | ![Settings Screen](screenshot/settings_screen.jpeg) |
 
-## Tecnologias Utilizadas / Technologies Used
+---
+
+## 🛠️ Tecnologias Utilizadas / Technologies Used
 
 <img align="center" alt="Flutter" title="Flutter" src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" />
 <img align="center" alt="Dart" title="Dart" src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" />
+<img align="center" alt="Riverpod" title="Riverpod" src="https://img.shields.io/badge/Riverpod-2396F3?style=for-the-badge&logo=riverpod&logoColor=white" />
 <img align="center" alt="SQLite" title="SQLite" src="https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white" />
 
--   **Flutter:** Framework para desenvolvimento de aplicações multiplataforma. / Framework for cross-platform application development.
--   **Dart:** Linguagem de programação utilizada pelo Flutter. / Programming language used by Flutter.
--   **sqflite:** Plugin para acesso a bancos de dados SQLite, usado para guardar o histórico. / Plugin for accessing SQLite databases, used to save the history.
--   **flutter_animate:** Para a criação de animações complexas de forma simples. / For creating complex animations in a simple way.
+-   **Flutter & Dart:** Framework e linguagem para desenvolvimento de aplicações multiplataforma.
+-   **Riverpod:** Gerenciamento de estado reativo e robusto.
+-   **sqflite:** Persistência de dados local para o histórico de partidas.
+-   **shared_preferences:** Armazenamento de preferências do usuário (tema e idioma).
+-   **flutter_localizations & intl:** Para suporte a múltiplos idiomas.
 
-## Estrutura do Projeto / Project Structure
+---
 
-A estrutura do projeto segue as melhores práticas, separando as responsabilidades em diferentes diretórios para garantir um código limpo e manutenível:
+## 📂 Estrutura do Projeto / Project Structure
 
-The project structure follows best practices, separating responsibilities into different directories to ensure clean and maintainable code:
+A estrutura do projeto segue o princípio de *feature-first*, agrupando o código por funcionalidade para garantir alta coesão e baixo acoplamento.
+
+*The project structure follows the feature-first principle, grouping code by functionality to ensure high cohesion and low coupling.*
 
 ```
 lib/
-├── core/
-│   ├── constants/
-│   ├── controllers/
+├── core/                 # Lógica de negócio, enums, temas, etc.
+│   ├── enums/
 │   └── theme/
-├── models/
-│   └── history.dart
-├── screens/
+├── l10n/                 # Arquivos de tradução (localização)
+├── models/               # Modelos de dados (ex: History)
+├── providers/            # Provedores de estado (Riverpod)
+│   ├── locale/
+│   └── theme/
+├── screens/              # Widgets que representam telas inteiras
 │   ├── game/
 │   ├── historic/
 │   ├── home/
 │   ├── menu/
-│   └── splash/
-├── services/
-│   └── database_service.dart
-└── widgets/
-    ├── card_history.dart
-    ├── empty_history_view.dart
-    ├── end_game_dialog.dart
-    ├── history_list_view.dart
-    ├── mark_button.dart
-    ├── player_choice.dart
-    ├── player_score_card.dart
-    └── score_indicator.dart
+│   └── settings/
+│       └── widgets/      # Widgets específicos da tela de configurações
+├── services/             # Serviços (ex: DatabaseService)
+└── widgets/              # Widgets reutilizáveis em toda a aplicação
 ```
 
-## Como Clonar e Executar o Projeto / How to Clone and Run the Project
+---
 
-Siga os passos abaixo para clonar e executar este projeto na sua máquina local:
-
-Follow the steps below to clone and run this project on your local machine:
+## 🚀 Como Executar / How to Run
 
 1.  **Pré-requisitos / Prerequisites**
-    *   Certifique-se de ter o [Flutter SDK](https://flutter.dev/docs/get-started/install) instalado e configurado.
-    *   Ensure you have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed and configured.
+    -   Certifique-se de ter o [Flutter SDK](https://flutter.dev/docs/get-started/install) instalado.
 
 2.  **Clonar o Repositório / Clone the Repository**
     ```bash
     git clone https://github.com/Leonildo-Gomes/tic-tac-toe.git
-    ```
-
-3.  **Navegar para o Diretório do Projeto / Navigate to the Project Directory**
-    ```bash
     cd tic-tac-toe
     ```
 
-4.  **Obter as Dependências / Get Dependencies**
+3.  **Obter as Dependências / Get Dependencies**
     ```bash
     flutter pub get
     ```
 
-5.  **Executar a Aplicação / Run the Application**
+4.  **Executar a Aplicação / Run the Application**
     ```bash
     flutter run
     ```
-    Certifique-se de ter um emulador ou dispositivo físico conectado e configurado.
-    Ensure you have an emulator or physical device connected and configured.
