@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 import 'package:tic_tac_toe/models/history.dart';
-import 'package:tic_tac_toe/services/database_service.dart';
+import 'package:tic_tac_toe/services/database/database_service.dart';
 import 'package:tic_tac_toe/widgets/empty_history_view.dart';
 import 'package:tic_tac_toe/widgets/history_list_view.dart';
 

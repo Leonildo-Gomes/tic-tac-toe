@@ -10,6 +10,8 @@ Um jogo da velha moderno e completo, desenvolvido em Flutter, com um design eleg
 
 -   **Modo de Jogo Individual:** Desafie a CPU em três níveis de dificuldade: Fácil, Médio e Difícil.
     -   *Challenge the CPU with three difficulty levels: Easy, Medium, and Hard.*
+-   **Efeitos Sonoros:** Feedback de áudio para cliques e resultados de jogo (vitória, derrota, empate), com opção de desativar.
+    -   *Audio feedback for clicks and game results (win, lose, draw), with an option to disable.*
 -   **Personalização de Tema:** Escolha entre os temas Claro, Escuro ou o padrão do Sistema.
     -   *Choose between Light, Dark, or the System default theme.*
 -   **Suporte Multilíngue:** Interface disponível em Português, Inglês e Norueguês.
@@ -21,18 +23,31 @@ Um jogo da velha moderno e completo, desenvolvido em Flutter, com um design eleg
 -   **Design Moderno:** Interface limpa e intuitiva, construída com Material Design 3 e animações fluidas.
     -   *Clean and intuitive interface, built with Material Design 3 and smooth animations.*
 ---
-## 🧠 Gerenciamento de Estado com Riverpod
+## 🧠 Arquitetura e Gestão de Estado
 
-O estado da aplicação é gerenciado utilizando [Riverpod](https://riverpod.dev), uma solução robusta e escalável para Flutter.
+A aplicação utiliza [Riverpod](https://riverpod.dev) para uma gestão de estado robusta e uma arquitetura desacoplada. As responsabilidades são claramente separadas:
 
-- A pasta `lib/providers/` organiza os provedores por responsabilidade (tema, idioma, lógica do jogo).
-- Provedores como `StateNotifierProvider` são utilizados para encapsular a lógica do jogo e reagir a mudanças de estado.
-- O app é inicializado com `ProviderScope`, permitindo o acesso a qualquer provedor no widget tree.
+-   **Providers para Estado da UI:** `StateNotifierProvider` é usado para gerenciar o estado que a UI observa diretamente (ex: `soundEnabledProvider`, `themeProvider`).
+-   **Providers para Serviços:** `Provider` é usado para injeção de dependência, fornecendo acesso a implementações de lógica de negócio (como `SoundService`) sem acoplar a UI aos detalhes de implementação.
 
-Exemplo de uso:
+Isso torna o código mais testável, modular e fácil de manter.
+
+**Exemplos:**
+
+*Provider para gerenciar o estado de ativação do som:*
 ```dart
-final gameControllerProvider = StateNotifierProvider<GameController, GameState>((ref) {
-  return GameController();
+final soundEnabledProvider = StateNotifierProvider<SoundEnabledNotifier, bool>((ref) {
+  return SoundEnabledNotifier();
+});
+```
+
+*Provider para injetar o serviço de áudio:*
+```dart
+final soundServiceProvider = Provider<SoundService>((ref) {
+  final player = AudioPlayer();
+  final service = SoundService(player);
+  ref.onDispose(() => service.dispose());
+  return service;
 });
 ```
 ---
@@ -61,37 +76,49 @@ final gameControllerProvider = StateNotifierProvider<GameController, GameState>(
 <img align="center" alt="SQLite" title="SQLite" src="https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white" />
 
 -   **Flutter & Dart:** Framework e linguagem para desenvolvimento de aplicações multiplataforma.
--   **Riverpod:** Gerenciamento de estado reativo e robusto.
+-   **Riverpod:** Gerenciamento de estado e injeção de dependência.
 -   **sqflite:** Persistência de dados local para o histórico de partidas.
--   **shared_preferences:** Armazenamento de preferências do usuário (tema e idioma).
+-   **shared_preferences:** Armazenamento de preferências do usuário (tema, idioma, som).
+-   **audioplayers:** Reprodução de efeitos sonoros.
 -   **flutter_localizations & intl:** Para suporte a múltiplos idiomas.
 
 ---
 
 ## 📂 Estrutura do Projeto / Project Structure
 
-A estrutura do projeto segue o princípio de *feature-first*, agrupando o código por funcionalidade para garantir alta coesão e baixo acoplamento.
+A estrutura do projeto agrupa o código por funcionalidade para garantir alta coesão e baixo acoplamento.
 
-*The project structure follows the feature-first principle, grouping code by functionality to ensure high cohesion and low coupling.*
+*The project structure groups code by functionality to ensure high cohesion and low coupling.*
 
 ```
 lib/
-├── core/                 # Lógica de negócio, enums, temas, etc.
+├── assets/               # Arquivos estáticos (imagens, sons)
+│   ├── images/
+│   └── sounds/
+├── core/                 # Código central da app (constantes, temas, utils)
+│   ├── constants/
+│   ├── controllers/
 │   ├── enums/
-│   └── theme/
+│   ├── theme/
+│   └── utils/
 ├── l10n/                 # Arquivos de tradução (localização)
-├── models/               # Modelos de dados (ex: History)
-├── providers/            # Provedores de estado (Riverpod)
+├── models/               # Modelos de dados (ex: GameState, History)
+├── providers/            # Camada de estado e injeção de dependência (Riverpod)
+│   ├── database/
+│   ├── game/
 │   ├── locale/
+│   ├── sound/
 │   └── theme/
-├── screens/              # Widgets que representam telas inteiras
+├── screens/              # Widgets que representam as telas da aplicação
 │   ├── game/
 │   ├── historic/
 │   ├── home/
 │   ├── menu/
 │   └── settings/
-│       └── widgets/      # Widgets específicos da tela de configurações
-├── services/             # Serviços (ex: DatabaseService)
+│       └── widgets/
+├── services/             # Implementação de lógicas externas (ex: Database, Sound)
+│   ├── database/
+│   └── sound/
 └── widgets/              # Widgets reutilizáveis em toda a aplicação
 ```
 

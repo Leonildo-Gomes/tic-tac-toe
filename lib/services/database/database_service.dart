@@ -46,14 +46,14 @@ class DatabaseService {
       // If the database is at version 1, we add the 'mode' column.
       // The default value 'CPU' must be in single quotes to be valid SQL.
       await db.execute(
-        "ALTER TABLE \${History.tableName} ADD COLUMN \${History.columnMode} TEXT NOT NULL",
+        "ALTER TABLE ${History.tableName} ADD COLUMN ${History.columnMode} TEXT NOT NULL",
       );
     }
 
     if (oldVersion < 3) {
       // If the database is at version 1, we add the 'level' column.
       await db.execute(
-        "ALTER TABLE \${History.tableName} ADD COLUMN \${History.columnLevel} INTEGER",
+        "ALTER TABLE ${History.tableName} ADD COLUMN ${History.columnLevel} INTEGER",
       );
     }
   }
