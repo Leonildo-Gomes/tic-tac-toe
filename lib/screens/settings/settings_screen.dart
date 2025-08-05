@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 import 'package:tic_tac_toe/screens/settings/widgets/language_setting.dart';
 import 'package:tic_tac_toe/screens/settings/widgets/sound_setting.dart';
@@ -26,15 +27,24 @@ class SettingsScreen extends StatelessWidget {
             _SettingsSection(
               title: context.l10n.language,
               child: const LanguageSetting(),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 300.ms, duration: 500.ms)
+                .slideY(begin: 0.2),
             _SettingsSection(
               title: context.l10n.theme,
               child: const ThemeSetting(),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 400.ms, duration: 500.ms)
+                .slideY(begin: 0.2),
             _SettingsSection(
               title: context.l10n.sound,
               child: const SoundSetting(),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 500.ms, duration: 500.ms)
+                .slideY(begin: 0.2),
           ],
         ),
       ),
@@ -43,7 +53,10 @@ class SettingsScreen extends StatelessWidget {
 }
 
 class _SettingsSection extends StatelessWidget {
-  const _SettingsSection({required this.title, required this.child});
+  const _SettingsSection({
+    required this.title,
+    required this.child,
+  });
 
   final String title;
   final Widget child;
@@ -62,3 +75,4 @@ class _SettingsSection extends StatelessWidget {
     );
   }
 }
+

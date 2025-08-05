@@ -20,7 +20,21 @@ Um jogo da velha moderno e completo, desenvolvido em Flutter, com um design eleg
     -   *Delete individual matches with a simple swipe or clear the entire history at once.*
 -   **Design Moderno:** Interface limpa e intuitiva, construída com Material Design 3 e animações fluidas.
     -   *Clean and intuitive interface, built with Material Design 3 and smooth animations.*
+---
+## 🧠 Gerenciamento de Estado com Riverpod
 
+O estado da aplicação é gerenciado utilizando [Riverpod](https://riverpod.dev), uma solução robusta e escalável para Flutter.
+
+- A pasta `lib/providers/` organiza os provedores por responsabilidade (tema, idioma, lógica do jogo).
+- Provedores como `StateNotifierProvider` são utilizados para encapsular a lógica do jogo e reagir a mudanças de estado.
+- O app é inicializado com `ProviderScope`, permitindo o acesso a qualquer provedor no widget tree.
+
+Exemplo de uso:
+```dart
+final gameControllerProvider = StateNotifierProvider<GameController, GameState>((ref) {
+  return GameController();
+});
+```
 ---
 
 ## 📸 Screenshots

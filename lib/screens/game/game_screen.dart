@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/core/constants/difficulty.dart';
-import 'package:tic_tac_toe/core/controllers/game_controller.dart';
+import 'package:tic_tac_toe/providers/game/game_provider.dart';
+import 'package:tic_tac_toe/providers/sound/sound_provider.dart';
+import 'package:tic_tac_toe/services/sound/sound_service.dart';
 import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 import 'package:tic_tac_toe/models/game_state.dart';
 import 'package:tic_tac_toe/widgets/end_game_dialog.dart';
@@ -54,7 +56,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     _initializeGame();
   }
 
+  void _playSound(Future<void> Function(SoundService) play) {
+    if (ref.read(soundEnabledProvider)) {
+      final soundService = ref.read(soundServiceProvider);
+      play(soundService);
+    }
+  }
+
   void _handleTap(int index) {
+    _playSound((s) => s.playClickSound());
+
     final gameNotifier = ref.read(gameControllerProvider.notifier);
     gameNotifier.makeMove(index);
   }
@@ -86,6 +97,18 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     ref.listen<GameState>(gameControllerProvider, (previous, next) {
       if (next.gameOver && !previous!.gameOver) {
         _updateScores(next.winner);
+
+        // Play end game sound effects
+        _playSound((s) {
+          if (next.winner == widget.userMark) {
+            return s.playWinSound();
+          } else if (next.winner == 'empate') {
+            return s.playDrawSound();
+          } else {
+            return s.playLoseSound();
+          }
+        });
+
         _showEndGameDialog(next.winner);
       }
     });

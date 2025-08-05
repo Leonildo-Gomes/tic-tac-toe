@@ -5,7 +5,7 @@ import 'package:tic_tac_toe/core/constants/constant.dart';
 import 'package:tic_tac_toe/core/constants/difficulty.dart';
 import 'package:tic_tac_toe/models/game_state.dart';
 import 'package:tic_tac_toe/models/history.dart';
-import 'package:tic_tac_toe/services/database_service.dart';
+import 'package:tic_tac_toe/providers/database/database_provider.dart';
 
 class GameController extends Notifier<GameState> {
   final Random _random = Random();
@@ -279,11 +279,3 @@ class GameController extends Notifier<GameState> {
     await databaseService.insertHistory(history);
   }
 }
-
-final gameControllerProvider = NotifierProvider<GameController, GameState>(
-  GameController.new,
-);
-
-final databaseServiceProvider = Provider<DatabaseService>((ref) {
-  return DatabaseService.instance;
-});

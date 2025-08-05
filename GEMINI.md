@@ -1,101 +1,92 @@
+# Projeto: Jogo da Velha (Tic Tac Toe)
 
-# Projeto: Jogo da velha
-    Este é um jogo simples de Jogo da Velha desenvolvido em Flutter, onde 1 jogadores pode enfrentar a CPU. O jogo fornece uma interface amigável e fácil de usar, com indicação clara de vitória ou empate.
+Este documento serve como a fonte central de verdade para o desenvolvimento do aplicativo Jogo da Velha.
 
-
-🎮 FUNCIONALIDADES
-- Jogo local para 1 jogadore contra CPU.
-- Nivel Jogo: Basico e Avancado.
-- Escolher a indicação visual para iniciar jogo (jogador X ou O)
-- Indicação visual de turno (jogador X ou O).
-- Destacar a combinação vencedora.
-- Placar de vitórias e empates.
-- Botão para reiniciar a partida.
-- Botão para resetar o placar.
-- Histórico de partidas salvo localmente via SQLite.
-- Tela de histórico com data, resultado e jogadas.
-- Utilizar componentes modernos do Material 3: `FilledButton`, `ElevatedButton`, `Card`, `Dialog`, `NavigationBar`, etc.
-
-
-
-
-Você é um engenheiro Flutter/Dart especialista em desenvolvimento mobile para Android e iOS. Sua tarefa é criar uma aplicação moderna, performática e bem estruturada de **Jogo da Velha (Tic Tac Toe)**, utilizando Flutter, Dart e SQLite.
-
-🛠️ A aplicação deve seguir **os princípios do Material Design 3.0 (Material You)**, com design responsivo, suave e acessível, aproveitando os recursos de temas dinâmicos, componentes modernos e tipografia adaptativa do Material 3.
-
-📱 A aplicação será multiplataforma: Android e iOS.
+Você é um engenheiro Flutter/Dart especialista em desenvolvimento mobile para Android e iOS. Sua tarefa é criar uma aplicação moderna, performática e bem estruturada, utilizando as tecnologias e seguindo as convenções aqui definidas.
 
 ---
 
-🔧 REQUISITOS GERAIS
-- Estrutura organizada: `screens`, `widgets`, `models`, `services`, `helpers`, `constants`, `types`.
-- Design responsivo com `LayoutBuilder` ou `MediaQuery`.
-- Uso de `ThemeData(useMaterial3: true)` com suporte a temas claros e escuros.
-- Estilização via `Theme.of(context).colorScheme`, `textTheme`, `shapeScheme`.
+##  Stack de Tecnologias
+
+- **Framework:** Flutter 3.x
+- **Linguagem:** Dart 3.x
+- **Design System:** Material Design 3 (Material You)
+- **Gestão de Estado:** Riverpod
+- **Banco de Dados Local:** SQLite
 
 ---
 
-🎮 FUNCIONALIDADES
-- Jogo local para dois jogadores no mesmo dispositivo.
-- Indicação visual de turno (jogador X ou O).
-- Destacar a combinação vencedora.
-- Placar de vitórias e empates.
-- Botão para reiniciar a partida.
-- Botão para resetar o placar.
-- Histórico de partidas salvo localmente via SQLite.
-- Tela de histórico com data, resultado e jogadas.
-- Utilizar componentes modernos do Material 3: `FilledButton`, `ElevatedButton`, `Card`, `Dialog`, `NavigationBar`, etc.
+## 🎯 Visão Geral do Produto
+
+Desenvolver uma aplicação de Jogo da Velha com uma UI moderna, armazenamento local eficiente e código limpo e sustentável. A aplicação deve ser multiplataforma (Android & iOS) e estar pronta para futuras melhorias, como multiplayer online.
 
 ---
 
-🧱 CONVENÇÕES DE CÓDIGO E BOAS PRÁTICAS
+## 🎮 Funcionalidades
 
-**Dart e Flutter**
-- Usar as convenções do Dart.
-- Usar `const` sempre que possível para reduzir rebuilds.
-- Usar `=>` para funções simples.
-- Getters e setters de uma linha devem ser expressões.
-- Usar vírgulas finais em parâmetros múltiplos.
-- Preferir `StatelessWidget`. Usar `StatefulWidget` só quando necessário.
-- Composição sobre herança.
-- Nomes de variáveis claros (ex: `isGameOver`, `hasWinner`, `currentPlayer`).
+### Modos de Jogo
+- [x] **Jogador vs. CPU:** Permite que um jogador enfrente a inteligência artificial.
+- [ ] **Jogador vs. Jogador:** Permite que dois jogadores se enfrentem no mesmo dispositivo.
 
+### Níveis de Dificuldade (CPU)
+- [x] Facil
+- [x] Medio
+- [x] Dificil
 
-**Tratamento de erros e estado**
-- Exibir erros com `SelectableText.rich` em vermelho (evitar SnackBar).
-- Usar `AsyncValue`, `FutureBuilder` ou `StateNotifier` para controle de estado.
-- Tratar estados vazios e carregando diretamente na tela.
+### Gameplay
+- [x] Escolher o símbolo para iniciar o jogo (X ou O).
+- [x] Indicação visual clara do turno do jogador atual.
+- [x] Destaque visual da combinação vencedora (linha, coluna ou diagonal).
+- [x] Diálogo de fim de jogo indicando vitória, derrota ou empate.
 
-**Banco de Dados**
-- Usar SQLite com tabelas que contenham `createdAt`, `updatedAt`, `isDeleted`.
-- Modelos devem ser anotados com `@JsonSerializable(fieldRename: FieldRename.snake)`.
-- Campos somente leitura com `@JsonKey(includeFromJson: true, includeToJson: false)`.
-- Usar enums com `@JsonValue(int)` para persistência.
+### Placar e Histórico
+- [x] Placar de vitórias, derrotas e empates.
+- [x] Botão para reiniciar a partida atual.
+- [x] Botão para resetar todo o placar.
+- [x] Histórico de partidas salvo localmente via SQLite.
+- [x] Tela de histórico exibindo data, resultado e jogadas de cada partida.
+- [x] Indicador de atualização (`RefreshIndicator`) na tela de histórico.
 
-**UI com Material 3**
-- Usar widgets modernos: `FilledButton`, `Card`, `ListTile`, `Dialog`, `SegmentedButton`, `NavigationBar`, etc.
-- Utilizar `Theme.of(context).textTheme.titleLarge` ao invés de `headline6`, etc.
-- Tipografia e cores devem vir do `ThemeData`.
-- Implementar `RefreshIndicator` na tela de histórico.
+### Configurações
+- [x] **Idiomas:** Permitir a seleção entre Português, Inglês e Norueguês.
+- [x] **Temas:** Permitir a seleção entre tema claro, escuro e do sistema.
+- [ ] **Som:** Ativar ou desativar os efeitos sonoros do jogo.
 
-**Performance**
-- Evitar reconstruções desnecessárias.
+---
+
+## 🔧 Requisitos Gerais e Estrutura
+
+- **Estrutura de Pastas:** `screens`, `widgets`, `models`, `services`, `core`, `providers`.
+- **Design Responsivo:** Utilizar `LayoutBuilder` ou `MediaQuery` para adaptar a UI a diferentes tamanhos de tela.
+- **Temas:** Suporte a tema claro e escuro via `ThemeData(useMaterial3: true)`.
+- **Estilização:** As cores e fontes devem ser obtidas do `Theme.of(context)`.
+
+---
+
+## 🧱 Convenções de Código e Boas Práticas
+
+### Dart e Flutter
+- Seguir as convenções oficiais do Dart.
+- Usar `const` sempre que possível.
+- Preferir `StatelessWidget` e usar `StatefulWidget` apenas quando estritamente necessário.
+- Manter nomes de variáveis claros e descritivos (ex: `isGameOver`, `currentPlayer`).
+- Limitar o comprimento das linhas a 80 caracteres.
+
+### Gestão de Estado com Riverpod
+- Preferir `ConsumerWidget` e `ConsumerStatefulWidget` para consumir providers.
+- Usar `ref.watch` para reconstruir a UI quando o estado muda.
+- Usar `ref.read` para obter o estado uma única vez (ex: em callbacks como `onPressed`).
+- Dividir os providers de forma granular para evitar reconstruções desnecessárias.
+
+### UI com Material 3
+- Utilizar componentes modernos: `FilledButton`, `Card`, `ListTile`, `Dialog`, `SegmentedButton`, `NavigationBar`, etc.
+- Usar a nova escala de tipografia (ex: `Theme.of(context).textTheme.titleLarge`).
+
+### Banco de Dados (SQLite)
+- Modelos devem ser serializáveis (ex: com `json_serializable`).
+- Tabelas devem incluir timestamps (`createdAt`, `updatedAt`).
+
+### Performance
+- Evitar reconstruções desnecessárias de widgets.
 - Otimizar listas com `ListView.builder`.
-- Usar `AssetImage` para imagens locais e `cached_network_image` para remotas.
-- Evitar chamadas de função diretas no `build()`.
-
-**Boas práticas**
-- Usar `log()` no lugar de `print()`.
-- Linhas com no máximo 80 caracteres.
-- Comentários explicando lógicas complexas ou decisões técnicas.
-
----
-
-🎯 OBJETIVO FINAL
-Desenvolver uma aplicação Flutter com:
-- UI moderna baseada no Material 3.
-- Armazenamento local eficiente com SQLite.
-- Código limpo, organizado, performático e sustentável.
-- Estrutura pronta para futuras melhorias, como multiplayer online ou integração com backend.
-
-Siga a documentação oficial do Flutter e os princípios do Material Design 3 para todas as decisões de design e código.
+- Não realizar chamadas de função diretamente no método `build()`.
