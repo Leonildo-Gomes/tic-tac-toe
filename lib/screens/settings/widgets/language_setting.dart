@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/core/enums/language.dart';
-import 'package:tic_tac_toe/core/utils/context_extensions.dart';
 import 'package:tic_tac_toe/l10n/app_localizations.dart';
 import 'package:tic_tac_toe/providers/locale/locale_provider.dart';
 

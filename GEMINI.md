@@ -13,6 +13,7 @@ Você é um engenheiro Flutter/Dart especialista em desenvolvimento mobile para 
 - **Design System:** Material Design 3 (Material You)
 - **Gestão de Estado:** Riverpod
 - **Banco de Dados Local:** SQLite
+- **Armazenamento de preferências :**  shared_preferences
 
 ---
 
@@ -50,7 +51,7 @@ Desenvolver uma aplicação de Jogo da Velha com uma UI moderna, armazenamento l
 ### Configurações
 - [x] **Idiomas:** Permitir a seleção entre Português, Inglês e Norueguês.
 - [x] **Temas:** Permitir a seleção entre tema claro, escuro e do sistema.
-- [ ] **Som:** Ativar ou desativar os efeitos sonoros do jogo.
+- [x] **Som:** Ativar ou desativar os efeitos sonoros do jogo.
 
 ---
 

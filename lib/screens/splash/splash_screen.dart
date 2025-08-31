@@ -20,7 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 5)); // 3-second delay
+    // Tempo de espera reduzido para 3 segundos para uma experiência mais rápida
+    await Future.delayed(const Duration(seconds: 3));
     if (mounted) {
       Navigator.pushReplacementNamed(context, HomeScreen.routeName);
     }
@@ -29,44 +30,48 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    //final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                    context.l10n.appTitle,
-                    style: theme.textTheme.displayMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  )
-                  .animate()
-                  .fade(duration: 800.ms, curve: Curves.easeIn)
-                  .slideY(
-                    begin: 0.5,
-                    end: 0,
-                    duration: 800.ms,
-                    curve: Curves.easeOut,
-                  ),
-              const SizedBox(height: 16),
-              const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ).animate().fade(delay: 1000.ms, duration: 500.ms),
-            ],
-          ),
+      // Cor de fundo mais limpa, alinhada com o resto do app
+      backgroundColor: theme.colorScheme.surfaceContainerLow,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Logo do jogo para fortalecer a identidade visual
+            Image.asset(
+              'assets/images/tic-tac-toe.png',
+              height: screenHeight * 0.15, // Logo um pouco maior
+              color: theme.colorScheme.onSurface,
+            )
+                .animate()
+                .fade(duration: 800.ms)
+                .scale(
+                  delay: 200.ms,
+                  duration: 800.ms,
+                  curve: Curves.elasticOut, // Curva de animação mais moderna
+                ),
+            const SizedBox(height: 24),
+            // Título do app posicionado abaixo do logo
+            Text(
+              context.l10n.appTitle,
+              style: theme.textTheme.displaySmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onSurface,
+              ),
+            )
+                .animate()
+                .fade(delay: 800.ms, duration: 800.ms) // Aparece após o logo
+                .slideY(
+                  begin: 0.5,
+                  end: 0,
+                  duration: 800.ms,
+                  curve: Curves.easeOut,
+                ),
+          ],
         ),
       ),
-    ).animate().shimmer(duration: 1500.ms);
+    );
   }
 }
